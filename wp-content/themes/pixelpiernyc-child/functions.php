@@ -2,6 +2,9 @@
 /**
  * PixelPierNYC Child - G Das Ventures Functions
  */
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
 add_action( 'wp_enqueue_scripts', 'gdas_enqueue_scripts', 20 );
 function gdas_enqueue_scripts() {
