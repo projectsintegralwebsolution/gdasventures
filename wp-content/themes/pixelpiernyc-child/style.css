@@ -1,0 +1,31 @@
+/*
+Theme Name: PixelPierNYC Child - G Das Ventures
+Theme URI: https://gdasventures.com
+Description: Bespoke editorial theme for G Das Ventures - Private Investment Platform backing India's next generation of builders.
+Author: G Das Ventures / AG
+Author URI: https://gdasventures.com
+Template: pixelpiernyc
+Version: 1.0.0
+Text Domain: pixelpiernyc-child
+*/
+
+/* Reset & Variables */
+:root {
+  --gdas-navy: #0A1128;
+  --gdas-navy-soft: #141E38;
+  --gdas-navy-dark: #060B1A;
+  --gdas-gold: #B88E44;
+  --gdas-gold-light: #D4AF67;
+  --gdas-gold-subtle: #FAF7F0;
+  --gdas-gold-border: rgba(184, 142, 68, 0.28);
+  --gdas-bg: #FCFBF7;
+  --gdas-bg-card: #FFFFFF;
+  --gdas-border: #E8E5DF;
+  --gdas-border-light: #F0EDE6;
+  --gdas-text-main: #0C1327;
+  --gdas-text-body: #374151;
+  --gdas-text-muted: #64748B;
+  --gdas-text-light: #94A3B8;
+  --gdas-font-serif: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
+  --gdas-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}

@@ -1,0 +1,41 @@
+// Button.
+.elementor-widget-button {
+	// Base Theme Widget Styles.
+	&.vamtam-has-theme-widget-styles {
+		&.vamtam-btn-text-align {
+			.elementor-button-content-wrapper {
+				text-align: start;
+
+				.elementor-button-icon i {
+					color: transparent;
+				}
+
+				&:hover {
+					.elementor-button-icon i {
+						color: inherit;
+					}
+				}
+			}
+		}
+
+		&.elementor-align-justify .elementor-button-link {
+			text-align: start;
+		}
+
+		&.vamtam-btn-icon {
+			.elementor-button {
+				.elementor-button-content-wrapper {
+					text-align: start;
+				}
+
+				.elementor-button-icon {
+					color: transparent;
+				}
+
+				&:hover .elementor-button-icon {
+					color: inherit;
+				}
+			}
+		}
+	}
+}

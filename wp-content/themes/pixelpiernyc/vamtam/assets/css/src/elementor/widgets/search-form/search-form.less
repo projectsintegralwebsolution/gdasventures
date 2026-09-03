@@ -1,0 +1,37 @@
+// Search Form.
+.elementor-widget-search-form {
+	// Base Theme Widget Styles.
+    &.vamtam-has-theme-widget-styles {
+
+		&.vamtam-search-form {
+
+			&.elementor-search-form--skin-minimal {
+
+				&:focus-within {
+					outline-width: 0;
+					outline-style: none;
+				}
+			}
+
+			.elementor-search-form__icon .fa-search {
+				font-family: 'theme-icons';
+				&::before {
+					content: var(--vamtam-icon-chevron-left);
+					font-weight: 400;
+				}
+			}
+
+			.elementor-search-form input {
+				border-width: 0;
+			}
+		}
+
+		&.elementor-search-form--icon-search .elementor-search-form__submit .fa-search {
+			font-family: 'theme-icons';
+			&::before {
+				content: var(--vamtam-icon-Search);
+				font-weight: 400;
+			}
+		}
+	}
+}

@@ -1,0 +1,140 @@
+// Nav Menu.
+.elementor-widget-nav-menu {
+	// Base Theme Widget Styles.
+	&.vamtam-has-theme-widget-styles {
+		.sub-arrow {
+			font-size: 80%;
+		}
+
+		html.ios-safari & li {
+			outline: 0 !important;
+		}
+
+		&.vamtam-hr-underline .elementor-nav-menu--main .elementor-nav-menu .menu-item .elementor-item::after {
+			bottom: 20px;
+		}
+
+		&.vamtam-menu-icon {
+			&.elementor-nav-menu--toggle {
+				.eicon-menu-bar {
+					font-family: 'theme-icons';
+
+					&:before {
+						content: var(--vamtam-icon-menu);
+					}
+				}
+
+				.eicon-close {
+					font-family: 'theme-icons';
+
+					&:before {
+						content: var(--vamtam-icon-arrow-right-top);
+					}
+				}
+			}
+		}
+
+		.vamtam-menu-click-on-hover {
+			.sub-arrow .fa-chevron-down {
+				font-size: inherit;
+				&::before {
+					content: "\f107";
+				}
+			}
+		}
+
+		&.vamtam-menu-indicator {
+			ul.elementor-nav-menu {
+				> li {
+					&.menu-item-has-children,
+					&[class*="mega-menu"] {
+						&::before {
+							content: "\f0d7";
+							color: var(--vamtam-menu-color);
+							display: inline-block;
+							font-family: "Font Awesome 5 Free";
+							font-size: 16px;
+    						font-weight: 900;
+							line-height: 1;
+							position: absolute;
+							right: calc(var(--e-nav-menu-horizontal-menu-item-margin, 0px) - 7.5px);
+							align-self: center;
+							-moz-osx-font-smoothing: grayscale;
+							-webkit-font-smoothing: antialiased;
+						}
+						&:last-child::before {
+							right: -7.5px;
+						}
+						&:hover::before {
+							color: var(--vamtam-menu-color-hover);
+						}
+						&.current_page_item,
+						&:active {
+							&::before {
+								color: var(--vamtam-menu-color-active);
+							}
+						}
+						// For consecutive non-[mega-menu/dropdown] menu-items (when at least one vamtam-menu-indicator exists).
+						~:not([class*="mega-menu"]):not([class*="menu-item-has-children"]) +:not([class*="mega-menu"]):not([class*="menu-item-has-children"]) > a {
+							@indicator-diff: calc(var(--e-nav-menu-horizontal-menu-item-margin) - 7.5px);
+							@spacing: clamp(0px, @indicator-diff, @indicator-diff); // clamp() is not needed here but max() was not working as expected due to calc().
+							margin-inline-start: @spacing;
+						}
+					}
+				}
+			}
+		}
+
+		&:not(.vamtam-has-submenu-icon) {
+			.elementor-nav-menu .sub-arrow {
+				display: none;
+			}
+		}
+
+		.menu-item {
+			&[class*="vamtam-flag-"] {
+				a.elementor-item-anchor::before {
+					position: relative;
+					margin-right: 7px;
+					width: 18px;
+					height: 1em;
+					opacity: 1;
+					visibility: visible;
+					background-color: transparent !important;
+					line-height: 1;
+				}
+			}
+			&.vamtam-flag-uk {
+				a.elementor-item-anchor::before {
+					content: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg viewBox='0 0 1e3 500' xmlns='http://www.w3.org/2000/svg' xmlns:cc='http://creativecommons.org/ns%23' xmlns:dc='http://purl.org/dc/elements/1.1/' xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns%23'%3E%3Cg transform='scale(16.667)' stroke-width='1pt'%3E%3Crect width='60' height='30' fill='%23006'/%3E%3Cpath d='m0 0v3.3541l53.292 26.646h6.708v-3.354l-53.292-26.646h-6.708zm60 0v3.354l-53.292 26.646h-6.708v-3.354l53.292-26.646h6.708z' fill='%23fff'/%3E%3Cpath d='m25 0v30h10v-30h-10zm-25 10v10h60v-10h-60z' fill='%23fff'/%3E%3Cpath d='m0 12v6h60v-6h-60zm27-12v30h6v-30h-6z' fill='%23c00'/%3E%3Cpath d='m0 30 20-10h4.472l-20 10h-4.472zm0-30 20 10h-4.472l-15.528-7.7639v-2.2361zm35.528 10 20-10h4.472l-20 10h-4.472zm24.472 20-20-10h4.472l15.528 7.764v2.236z' fill='%23c00'/%3E%3C/g%3E%3Cmetadata%3E%3Crdf:RDF%3E%3Ccc:Work%3E%3Cdc:format%3Eimage/svg+xml%3C/dc:format%3E%3Cdc:type rdf:resource='http://purl.org/dc/dcmitype/StillImage'/%3E%3Ccc:license rdf:resource='http://creativecommons.org/licenses/publicdomain/'/%3E%3Cdc:publisher%3E%3Ccc:Agent rdf:about='http://openclipart.org/'%3E%3Cdc:title%3EOpenclipart%3C/dc:title%3E%3C/cc:Agent%3E%3C/dc:publisher%3E%3Cdc:title%3EFlag of the United Kingdom%3C/dc:title%3E%3Cdc:date%3E2008-07-12T12:27:21%3C/dc:date%3E%3Cdc:description/%3E%3Cdc:source%3Ehttps://openclipart.org/detail/17754/flag-of-the-united-kingdom-by-tobias%3C/dc:source%3E%3Cdc:creator%3E%3Ccc:Agent%3E%3Cdc:title%3Etobias%3C/dc:title%3E%3C/cc:Agent%3E%3C/dc:creator%3E%3Cdc:subject%3E%3Crdf:Bag%3E%3Crdf:li%3Ecountry%3C/rdf:li%3E%3Crdf:li%3Eeurope%3C/rdf:li%3E%3Crdf:li%3Eeuropean union%3C/rdf:li%3E%3Crdf:li%3Eflag%3C/rdf:li%3E%3Crdf:li%3Enation%3C/rdf:li%3E%3Crdf:li%3Esign%3C/rdf:li%3E%3Crdf:li%3Eunited nations member%3C/rdf:li%3E%3Crdf:li%3Eunitedkingdom%3C/rdf:li%3E%3C/rdf:Bag%3E%3C/dc:subject%3E%3C/cc:Work%3E%3Ccc:License rdf:about='http://creativecommons.org/licenses/publicdomain/'%3E%3Ccc:permits rdf:resource='http://creativecommons.org/ns%23Reproduction'/%3E%3Ccc:permits rdf:resource='http://creativecommons.org/ns%23Distribution'/%3E%3Ccc:permits rdf:resource='http://creativecommons.org/ns%23DerivativeWorks'/%3E%3C/cc:License%3E%3C/rdf:RDF%3E%3C/metadata%3E%3C/svg%3E%0A");
+				}
+			}
+			&.vamtam-flag-de {
+				a.elementor-item-anchor::before {
+					content: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg version='1.0' viewBox='0 0 1063 637.8' xmlns='http://www.w3.org/2000/svg' xmlns:cc='http://web.resource.org/cc/' xmlns:dc='http://purl.org/dc/elements/1.1/' xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns%23'%3E%3Crect y='425.2' width='1063' height='212.6' fill='%23ffe600' fill-rule='evenodd' stroke-width='1pt'/%3E%3Crect y='3.8e-5' width='1063' height='212.6' fill-rule='evenodd' stroke-width='1pt'/%3E%3Crect y='212.6' width='1063' height='212.6' fill='%23f00' fill-rule='evenodd' stroke-width='1pt'/%3E%3Cmetadata%3E%3Crdf:RDF%3E%3Ccc:Work%3E%3Cdc:format%3Eimage/svg+xml%3C/dc:format%3E%3Cdc:type rdf:resource='http://purl.org/dc/dcmitype/StillImage'/%3E%3Ccc:license rdf:resource='http://creativecommons.org/licenses/publicdomain/'/%3E%3Cdc:publisher%3E%3Ccc:Agent rdf:about='http://openclipart.org/'%3E%3Cdc:title%3EOpenclipart%3C/dc:title%3E%3C/cc:Agent%3E%3C/dc:publisher%3E%3Cdc:title%3EFlag of Germany%3C/dc:title%3E%3Cdc:date%3E2008-02-05T04:38:35%3C/dc:date%3E%3Cdc:description/%3E%3Cdc:source%3Ehttps://openclipart.org/detail/12785/flag-of-germany-by-anonymous-12785%3C/dc:source%3E%3Cdc:creator%3E%3Ccc:Agent%3E%3Cdc:title%3EAnonymous%3C/dc:title%3E%3C/cc:Agent%3E%3C/dc:creator%3E%3Cdc:subject%3E%3Crdf:Bag%3E%3Crdf:li%3Ecountry%3C/rdf:li%3E%3Crdf:li%3Eeurope%3C/rdf:li%3E%3Crdf:li%3Eeuropean union%3C/rdf:li%3E%3Crdf:li%3Eflag%3C/rdf:li%3E%3Crdf:li%3Egermany%3C/rdf:li%3E%3Crdf:li%3Enation%3C/rdf:li%3E%3C/rdf:Bag%3E%3C/dc:subject%3E%3C/cc:Work%3E%3Ccc:License rdf:about='http://creativecommons.org/licenses/publicdomain/'%3E%3Ccc:permits rdf:resource='http://creativecommons.org/ns%23Reproduction'/%3E%3Ccc:permits rdf:resource='http://creativecommons.org/ns%23Distribution'/%3E%3Ccc:permits rdf:resource='http://creativecommons.org/ns%23DerivativeWorks'/%3E%3C/cc:License%3E%3C/rdf:RDF%3E%3C/metadata%3E%3C/svg%3E%0A");
+				}
+			}
+			&.vamtam-flag-es {
+				a.elementor-item-anchor::before {
+					content: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg version='1.0' viewBox='0 0 70 44.8' xmlns='http://www.w3.org/2000/svg' xmlns:cc='http://creativecommons.org/ns%23' xmlns:dc='http://purl.org/dc/elements/1.1/' xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns%23'%3E%3Cg transform='translate(0 .4)'%3E%3Cg transform='translate(-.35388 -.7433)'%3E%3Crect x='.35388' y='33.943' width='70' height='11.2' fill='%23c60b1e'/%3E%3Crect x='.35388' y='11.543' width='70' height='22.4' fill='%23ffc400'/%3E%3Crect x='.35388' y='.3433' width='70' height='11.2' fill='%23c60b1e'/%3E%3C/g%3E%3C/g%3E%3Cmetadata%3E%3Crdf:RDF%3E%3Ccc:Work%3E%3Cdc:format%3Eimage/svg+xml%3C/dc:format%3E%3Cdc:type rdf:resource='http://purl.org/dc/dcmitype/StillImage'/%3E%3Ccc:license rdf:resource='http://creativecommons.org/licenses/publicdomain/'/%3E%3Cdc:publisher%3E%3Ccc:Agent rdf:about='http://openclipart.org/'%3E%3Cdc:title%3EOpenclipart%3C/dc:title%3E%3C/cc:Agent%3E%3C/dc:publisher%3E%3Cdc:title%3EFlag of Spain%3C/dc:title%3E%3Cdc:date%3E2008-06-04T15:48:51%3C/dc:date%3E%3Cdc:description%3Espanish flag%3C/dc:description%3E%3Cdc:source%3Ehttps://openclipart.org/detail/17279/flag-of-spain-by-claudita%3C/dc:source%3E%3Cdc:creator%3E%3Ccc:Agent%3E%3Cdc:title%3Eclaudita%3C/dc:title%3E%3C/cc:Agent%3E%3C/dc:creator%3E%3Cdc:subject%3E%3Crdf:Bag%3E%3Crdf:li%3Ecountry%3C/rdf:li%3E%3Crdf:li%3Eeurope%3C/rdf:li%3E%3Crdf:li%3Eeuropean union%3C/rdf:li%3E%3Crdf:li%3Eflag%3C/rdf:li%3E%3Crdf:li%3Enation%3C/rdf:li%3E%3Crdf:li%3Espain%3C/rdf:li%3E%3C/rdf:Bag%3E%3C/dc:subject%3E%3C/cc:Work%3E%3Ccc:License rdf:about='http://creativecommons.org/licenses/publicdomain/'%3E%3Ccc:permits rdf:resource='http://creativecommons.org/ns%23Reproduction'/%3E%3Ccc:permits rdf:resource='http://creativecommons.org/ns%23Distribution'/%3E%3Ccc:permits rdf:resource='http://creativecommons.org/ns%23DerivativeWorks'/%3E%3C/cc:License%3E%3C/rdf:RDF%3E%3C/metadata%3E%3C/svg%3E%0A");
+				}
+			}
+			&.vamtam-flag-fr {
+				a.elementor-item-anchor::before {
+					content: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg version='1' viewBox='0 0 1063 708.66' xmlns='http://www.w3.org/2000/svg' xmlns:cc='http://creativecommons.org/ns%23' xmlns:dc='http://purl.org/dc/elements/1.1/' xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns%23'%3E%3Crect width='1063' height='708.66' fill='%23fff' fill-rule='evenodd' stroke-width='1pt'/%3E%3Crect width='354.33' height='708.66' fill='%2300267f' fill-rule='evenodd' stroke-width='1pt'/%3E%3Crect x='708.66' width='354.33' height='708.66' fill='%23f31830' fill-rule='evenodd' stroke-width='1pt'/%3E%3Cmetadata%3E%3Crdf:RDF%3E%3Ccc:Work%3E%3Cdc:format%3Eimage/svg+xml%3C/dc:format%3E%3Cdc:type rdf:resource='http://purl.org/dc/dcmitype/StillImage'/%3E%3Ccc:license rdf:resource='http://creativecommons.org/licenses/publicdomain/'/%3E%3Cdc:publisher%3E%3Ccc:Agent rdf:about='http://openclipart.org/'%3E%3Cdc:title%3EOpenclipart%3C/dc:title%3E%3C/cc:Agent%3E%3C/dc:publisher%3E%3Cdc:title%3EFlag of France%3C/dc:title%3E%3Cdc:date%3E2008-07-12T11:19:23%3C/dc:date%3E%3Cdc:description/%3E%3Cdc:source%3Ehttps://openclipart.org/detail/17736/flag-of-france-by-tobias%3C/dc:source%3E%3Cdc:creator%3E%3Ccc:Agent%3E%3Cdc:title%3Etobias%3C/dc:title%3E%3C/cc:Agent%3E%3C/dc:creator%3E%3Cdc:subject%3E%3Crdf:Bag%3E%3Crdf:li%3Ecountry%3C/rdf:li%3E%3Crdf:li%3Eeurope%3C/rdf:li%3E%3Crdf:li%3Eeuropean union%3C/rdf:li%3E%3Crdf:li%3Eflag%3C/rdf:li%3E%3Crdf:li%3Efrance%3C/rdf:li%3E%3Crdf:li%3Enation%3C/rdf:li%3E%3Crdf:li%3Esign%3C/rdf:li%3E%3Crdf:li%3Eunited nations member%3C/rdf:li%3E%3C/rdf:Bag%3E%3C/dc:subject%3E%3C/cc:Work%3E%3Ccc:License rdf:about='http://creativecommons.org/licenses/publicdomain/'%3E%3Ccc:permits rdf:resource='http://creativecommons.org/ns%23Reproduction'/%3E%3Ccc:permits rdf:resource='http://creativecommons.org/ns%23Distribution'/%3E%3Ccc:permits rdf:resource='http://creativecommons.org/ns%23DerivativeWorks'/%3E%3C/cc:License%3E%3C/rdf:RDF%3E%3C/metadata%3E%3C/svg%3E%0A");
+				}
+			}
+		}
+
+		ul.elementor-nav-menu--dropdown a {
+			&, &:hover, &:focus {
+				border-left: none;
+			}
+		}
+
+		.elementor-nav-menu--dropdown .elementor-item:focus,
+		.elementor-sub-item:focus {
+			background-color: transparent;
+		}
+	}
+}

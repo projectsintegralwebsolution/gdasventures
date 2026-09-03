@@ -1,0 +1,19 @@
+// Image Carousel.
+.elementor-widget-image-carousel {
+	// Base Theme Widget Styles.
+	&.vamtam-has-theme-widget-styles {
+
+		&.vamtam-nav-dots.elementor-pagination-position-outside :is(.swiper, .swiper-container) {
+			padding-bottom: var(--vamtam-nav-spacing, 60px);
+		}
+
+		.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+			transition-duration: 0.3s;
+
+			&.swiper-pagination-bullet-active {
+				width: 20px;
+				border-radius: 6px;
+			}
+		}
+	}
+}

@@ -1,0 +1,22 @@
+// Loop Carousel.
+.elementor-widget-loop-carousel {
+	// Base Theme Widget Styles.
+	&.vamtam-has-theme-widget-styles {
+		&[data-widget_type="loop-carousel.post"] {
+			.e-loop-item {
+				.elementor-widget-image[data-widget_type="image.default"] {
+					overflow: hidden;
+				}
+			}
+		}
+
+		.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+			transition-duration: 0.3s;
+
+			&.swiper-pagination-bullet-active {
+				width: 20px;
+				border-radius: 6px;
+			}
+		}
+	}
+}
