@@ -1,14 +1,14 @@
-﻿# WordPress Core
-wp-admin/
-wp-includes/
-wp-*.php
-index.php
-xmlrpc.php
-license.txt
-readme.html
+# WordPress Core (root only)
+/wp-admin/
+/wp-includes/
+/wp-*.php
+/index.php
+/xmlrpc.php
+/license.txt
+/readme.html
 
-# Sensitive Configuration
-wp-config.php
+# Sensitive Configuration (root only)
+/wp-config.php
 
 # WordPress uploads cache & elementor css cache
 wp-content/uploads/elementor/css/
