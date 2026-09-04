@@ -2300,22 +2300,21 @@ p {
   padding-bottom: 0 !important;
 }
 
-/* Second section (Stats / Trust Badges) balanced padding */
-.elementor-section.elementor-top-section:nth-of-type(2) {
-  padding-top: 4.5rem !important;
-  padding-bottom: 4.5rem !important;
+/* Second section (Stats / Trust Badges) balanced padding *.elementor-section.elementor-top-section:nth-of-type(2) {
+  padding-top: 2.2rem !important;
+  padding-bottom: 2.2rem !important;
   background: #FAF9F5 !important;
   border-bottom: 1px solid rgba(10, 17, 40, 0.06) !important;
 }
 
-/* Dark Portfolio Section generous breathing room */
+/* Dark Portfolio Section balanced breathing room */
 .gdas-section-black {
   background-color: #0E1113 !important;
   color: #FFFFFF !important;
   border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-  padding-top: clamp(5.5rem, 8vw, 8rem) !important;
-  padding-bottom: clamp(5.5rem, 8vw, 8rem) !important;
+  padding-top: clamp(3.2rem, 4.8vw, 4.5rem) !important;
+  padding-bottom: clamp(3.2rem, 4.8vw, 4.5rem) !important;
 }
 
 /* Eyebrows Spacing */
@@ -2325,12 +2324,12 @@ p {
   align-items: center !important;
   gap: 0.5rem !important;
   font-family: var(--gdas-font-sans) !important;
-  font-size: 0.8rem !important;
+  font-size: 0.76rem !important;
   font-weight: 700 !important;
-  letter-spacing: 0.18em !important;
+  letter-spacing: 0.16em !important;
   text-transform: uppercase !important;
   color: var(--gdas-gold) !important;
-  margin-bottom: 1.25rem !important;
+  margin-bottom: 0.85rem !important;
   padding: 0 !important;
 }
 
@@ -2338,48 +2337,49 @@ p {
 .elementor-widget-heading h2,
 .elementor-widget-heading h3 {
   letter-spacing: -0.025em !important;
-  line-height: 1.15 !important;
-  margin-bottom: 1.2rem !important;
+  line-height: 1.18 !important;
+  margin-bottom: 0.85rem !important;
 }
 
-/* 2. Bespoke Luxury FAQ Accordion */
+/* 2. Bespoke Luxury FAQ Accordion (SPG Leaders Standard with Pure CSS Plus/Minus Icons) */
 .elementor-widget-accordion {
-  max-width: 980px !important;
+  max-width: 960px !important;
   margin: 0 auto !important;
 }
 
 .elementor-widget-accordion .elementor-accordion {
   display: flex !important;
   flex-direction: column !important;
-  gap: 1.15rem !important;
+  gap: 0.75rem !important;
 }
 
 .elementor-widget-accordion .elementor-accordion .elementor-accordion-item {
-  border: 1px solid rgba(10, 17, 40, 0.09) !important;
-  border-radius: 14px !important;
+  border: 1px solid rgba(10, 17, 40, 0.08) !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.025) !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02) !important;
   overflow: hidden !important;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .elementor-widget-accordion .elementor-accordion .elementor-accordion-item:hover {
-  border-color: rgba(184, 142, 68, 0.45) !important;
-  box-shadow: 0 8px 26px rgba(184, 142, 68, 0.08) !important;
+  border-color: rgba(184, 142, 68, 0.4) !important;
+  box-shadow: 0 6px 20px rgba(184, 142, 68, 0.08) !important;
   transform: translateY(-2px) !important;
 }
 
 .elementor-widget-accordion .elementor-accordion .elementor-tab-title {
   font-family: var(--gdas-font-sans) !important;
-  font-size: 1.18rem !important;
-  font-weight: 700 !important;
+  font-size: clamp(1.02rem, 1.25vw, 1.15rem) !important;
+  font-weight: 600 !important;
   color: #0A1128 !important;
   background: #FFFFFF !important;
-  padding: 1.6rem 2.2rem !important;
+  padding: 1.2rem 1.6rem !important;
   margin: 0 !important;
   border: none !important;
   cursor: pointer !important;
   display: flex !important;
+  flex-direction: row !important;
   align-items: center !important;
   justify-content: space-between !important;
   transition: all 0.25s ease !important;
@@ -2388,44 +2388,86 @@ p {
 }
 
 .elementor-widget-accordion .elementor-accordion .elementor-tab-title.elementor-active {
-  background: #FCFBF7 !important;
+  background: #FAF9F5 !important;
   color: #0A1128 !important;
-  border-bottom: 1px solid rgba(184, 142, 68, 0.2) !important;
+  border-bottom: 1px solid rgba(184, 142, 68, 0.15) !important;
 }
 
 .elementor-widget-accordion .elementor-accordion .elementor-tab-title .elementor-accordion-title {
   color: inherit !important;
   text-decoration: none !important;
-  flex-grow: 1 !important;
+  order: 1 !important;
+  flex: 1 1 auto !important;
+  text-align: left !important;
 }
 
+/* Pure CSS Animated Circular Plus/Minus Accordion Toggle Icon */
 .elementor-widget-accordion .elementor-accordion .elementor-tab-title .elementor-accordion-icon {
+  order: 2 !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 34px !important;
-  height: 34px !important;
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
   border-radius: 50% !important;
   background: rgba(184, 142, 68, 0.12) !important;
-  color: var(--gdas-gold) !important;
-  font-size: 0.85rem !important;
-  transition: all 0.3s ease !important;
+  position: relative !important;
   flex-shrink: 0 !important;
-  margin-left: 1.25rem !important;
+  margin-left: 1.2rem !important;
+  margin-right: 0 !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
+/* Hide empty/broken icon elements */
+.elementor-widget-accordion .elementor-accordion .elementor-accordion-icon i {
+  display: none !important;
+}
+
+/* Geometric Plus Icon */
+.elementor-widget-accordion .elementor-accordion .elementor-accordion-icon::before,
+.elementor-widget-accordion .elementor-accordion .elementor-accordion-icon::after {
+  content: "" !important;
+  position: absolute !important;
+  background-color: var(--gdas-gold) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Horizontal Line */
+.elementor-widget-accordion .elementor-accordion .elementor-accordion-icon::before {
+  width: 12px !important;
+  height: 2px !important;
+  border-radius: 1px !important;
+}
+
+/* Vertical Line */
+.elementor-widget-accordion .elementor-accordion .elementor-accordion-icon::after {
+  width: 2px !important;
+  height: 12px !important;
+  border-radius: 1px !important;
+}
+
+/* Open / Active State: turns gold circular badge with crisp white Minus (-) */
 .elementor-widget-accordion .elementor-accordion .elementor-tab-title.elementor-active .elementor-accordion-icon {
   background: var(--gdas-gold) !important;
-  color: #FFFFFF !important;
-  transform: rotate(180deg) !important;
+  transform: rotate(90deg) !important;
+}
+
+.elementor-widget-accordion .elementor-accordion .elementor-tab-title.elementor-active .elementor-accordion-icon::before {
+  background-color: #FFFFFF !important;
+}
+
+.elementor-widget-accordion .elementor-accordion .elementor-tab-title.elementor-active .elementor-accordion-icon::after {
+  background-color: #FFFFFF !important;
+  transform: scaleY(0) !important;
 }
 
 .elementor-widget-accordion .elementor-accordion .elementor-tab-content {
-  background: #FCFBF7 !important;
-  padding: 1.6rem 2.2rem 2rem !important;
+  background: #FAF9F5 !important;
+  padding: 1.2rem 1.6rem 1.4rem !important;
   font-family: var(--gdas-font-sans) !important;
-  font-size: 1.05rem !important;
-  line-height: 1.8 !important;
+  font-size: 0.96rem !important;
+  line-height: 1.75 !important;
   color: #475569 !important;
   border: none !important;
   margin: 0 !important;
@@ -2440,42 +2482,42 @@ p {
 .elementor-section.elementor-top-section:nth-of-type(2) .elementor-widget-icon-box {
   background: #FFFFFF !important;
   border: 1px solid rgba(184, 142, 68, 0.2) !important;
-  border-radius: 16px !important;
-  padding: 2.5rem 2rem !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+  border-radius: 14px !important;
+  padding: 1.8rem 1.5rem !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02) !important;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
   height: 100% !important;
 }
 
 .elementor-section.elementor-top-section:nth-of-type(2) .elementor-widget-icon-box:hover {
-  transform: translateY(-6px) !important;
+  transform: translateY(-4px) !important;
   border-color: var(--gdas-gold) !important;
-  box-shadow: 0 16px 40px rgba(184, 142, 68, 0.14) !important;
+  box-shadow: 0 12px 30px rgba(184, 142, 68, 0.12) !important;
 }
 
 /* 4. Portfolio Cards Visual Polish */
 .gdas-section-black .elementor-widget-icon-box {
   background: #14171A !important;
   border: 1px solid rgba(255, 255, 255, 0.09) !important;
-  border-radius: 16px !important;
-  padding: 2.2rem !important;
+  border-radius: 14px !important;
+  padding: 1.8rem !important;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .gdas-section-black .elementor-widget-icon-box:hover {
   border-color: var(--gdas-gold) !important;
-  transform: translateY(-6px) !important;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5) !important;
 }
 
 .gdas-section-black .elementor-widget-image img {
   border-radius: 12px !important;
   transition: transform 0.4s ease !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
 }
 
 .gdas-section-black .elementor-column:hover .elementor-widget-image img {
-  transform: scale(1.025) !important;
+  transform: scale(1.02) !important;
 }
 
 /* 5. Underwriting / Conviction Cards (What Earns Our Conviction) */
@@ -2483,7 +2525,7 @@ p {
   background: #FFFFFF !important;
   border: 1px solid #E8E5DF !important;
   border-radius: 14px !important;
-  padding: 2.2rem 1.8rem !important;
+  padding: 1.8rem 1.6rem !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02) !important;
   transition: all 0.3s ease !important;
   height: 100% !important;
@@ -2499,10 +2541,10 @@ p {
 .elementor-widget-text-editor blockquote {
   border-left: 3px solid var(--gdas-gold) !important;
   padding: 1rem 0 1rem 1.5rem !important;
-  margin: 1.5rem 0 !important;
+  margin: 1.25rem 0 !important;
   font-style: italic !important;
-  font-family: var(--gdas-font-serif) !important;
-  font-size: 1.15rem !important;
+  font-family: var(--gdas-font-sans) !important;
+  font-size: 1.12rem !important;
   color: #1E293B !important;
   background: rgba(184, 142, 68, 0.04) !important;
   border-radius: 0 8px 8px 0 !important;
@@ -2512,8 +2554,8 @@ p {
 .elementor-section.elementor-top-section:last-of-type {
   background: linear-gradient(135deg, #0A1128 0%, #060B1A 100%) !important;
   color: #FFFFFF !important;
-  padding-top: clamp(6rem, 8.5vw, 8.5rem) !important;
-  padding-bottom: clamp(6rem, 8.5vw, 8.5rem) !important;
+  padding-top: clamp(3.5rem, 5vw, 4.8rem) !important;
+  padding-bottom: clamp(3.5rem, 5vw, 4.8rem) !important;
   border-top: 1px solid rgba(184, 142, 68, 0.28) !important;
 }
 
@@ -2526,11 +2568,12 @@ p {
 }
 
 /* ==========================================================================
-   Elementor Flexbox Container (.e-con) Generous Section Spacing
+   Elementor Flexbox Container (.e-con) Compact & Balanced Section Spacing
+   Reduced by ~50% from initial expansive values for optimal density
    ========================================================================== */
 .e-con.e-parent {
-  padding-top: clamp(5.5rem, 8vw, 8rem) !important;
-  padding-bottom: clamp(5.5rem, 8vw, 8rem) !important;
+  padding-top: clamp(2.6rem, 3.8vw, 3.8rem) !important;
+  padding-bottom: clamp(2.6rem, 3.8vw, 3.8rem) !important;
 }
 
 /* Container 1: Hero Banner (Zero artificial padding) */
@@ -2542,58 +2585,180 @@ p {
 
 /* Container 2: Stats & Trust Badges */
 .elementor-element-763c2fd {
-  padding-top: 4.5rem !important;
-  padding-bottom: 4.5rem !important;
+  padding-top: 2.2rem !important;
+  padding-bottom: 2.2rem !important;
   background-color: #FAF9F5 !important;
   border-bottom: 1px solid rgba(10, 17, 40, 0.06) !important;
 }
 
 /* Container 3: Our Thesis */
 .elementor-element-fa0a00d {
-  padding-top: clamp(6rem, 8.5vw, 8.5rem) !important;
-  padding-bottom: clamp(6rem, 8.5vw, 8.5rem) !important;
+  padding-top: clamp(2.8rem, 4.2vw, 4rem) !important;
+  padding-bottom: clamp(2.8rem, 4.2vw, 4rem) !important;
 }
 
 /* Container 4: Dark Portfolio Section (Companies We Have Backed) */
 .elementor-element-27a8a01,
 .gdas-section-black {
   background-color: #0E1113 !important;
-  padding-top: clamp(6.5rem, 9.5vw, 9.5rem) !important;
-  padding-bottom: clamp(6.5rem, 9.5vw, 9.5rem) !important;
+  padding-top: clamp(3.2rem, 4.8vw, 4.5rem) !important;
+  padding-bottom: clamp(3.2rem, 4.8vw, 4.5rem) !important;
 }
 
 /* Container 5: Our Underwriting */
 .elementor-element-0e9134f {
-  padding-top: clamp(6rem, 8.5vw, 8.5rem) !important;
-  padding-bottom: clamp(6rem, 8.5vw, 8.5rem) !important;
+  padding-top: clamp(2.8rem, 4.2vw, 4rem) !important;
+  padding-bottom: clamp(2.8rem, 4.2vw, 4rem) !important;
   background-color: #FCFBF7 !important;
 }
 
 /* Container 6: Investment Focus (Sectors) */
 .elementor-element-287d573 {
-  padding-top: clamp(6rem, 8.5vw, 8.5rem) !important;
-  padding-bottom: clamp(6rem, 8.5vw, 8.5rem) !important;
+  padding-top: clamp(2.8rem, 4.2vw, 4rem) !important;
+  padding-bottom: clamp(2.8rem, 4.2vw, 4rem) !important;
   background-color: #FFFFFF !important;
 }
 
 /* Container 7: FAQ (How We Work) */
 .elementor-element-6c3497b {
-  padding-top: clamp(6rem, 8.5vw, 8.5rem) !important;
-  padding-bottom: clamp(6.5rem, 9vw, 9rem) !important;
+  padding-top: clamp(2.8rem, 4.2vw, 4rem) !important;
+  padding-bottom: clamp(3rem, 4.5vw, 4.2rem) !important;
   background-color: #FAF9F5 !important;
 }
 
 /* Container 8: Bottom Commitment Banner */
 .elementor-element-882e7b6 {
   background: linear-gradient(135deg, #0A1128 0%, #060B1A 100%) !important;
-  padding-top: clamp(6.5rem, 9vw, 9rem) !important;
-  padding-bottom: clamp(6.5rem, 9vw, 9rem) !important;
+  padding-top: clamp(3.2rem, 4.8vw, 4.5rem) !important;
+  padding-bottom: clamp(3.2rem, 4.8vw, 4.5rem) !important;
 }
 
 /* Eyebrows within Containers */
 .e-con.e-parent .gdas-eyebrow,
 .e-con.e-parent .elementor-widget-heading .gdas-eyebrow {
   margin-top: 0 !important;
-  margin-bottom: 1.5rem !important;
+  margin-bottom: 0.85rem !important;
   display: inline-flex !important;
+}
+
+/* ==========================================================================
+   PixelPier / SPG Leaders Typography Hierarchy (Plus Jakarta Sans)
+   ========================================================================== */
+body, button, input, select, textarea,
+.elementor-widget,
+.elementor-heading-title,
+.elementor-icon-box-title,
+.elementor-icon-box-description {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* 1. Large Display / Hero Title */
+.elementor-widget-slides .elementor-slide-heading,
+.gdas-display-title {
+  font-size: clamp(2.4rem, 4.6vw, 3.8rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.12 !important;
+}
+
+/* 2. Thesis Major Statement Heading */
+.elementor-element-fa0a00d h2.elementor-heading-title,
+.elementor-element-fa0a00d .elementor-heading-title {
+  font-size: clamp(2rem, 3.4vw, 2.9rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1.22 !important;
+  color: #15191C !important;
+}
+
+/* 3. Section Primary Titles (H2) */
+.elementor-element-27a8a01 .elementor-widget-heading h2,
+.elementor-element-0e9134f .elementor-widget-heading h2,
+.elementor-element-287d573 .elementor-widget-heading h2,
+.elementor-element-6c3497b .elementor-widget-heading h2,
+.elementor-element-882e7b6 .elementor-widget-heading h2,
+.gdas-section-title {
+  font-size: clamp(1.7rem, 2.6vw, 2.3rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+}
+
+/* 4. Card Titles (H3 / H4) */
+.elementor-widget-icon-box .elementor-icon-box-title,
+.elementor-widget-icon-box .elementor-icon-box-title span,
+.gdas-card-title {
+  font-size: clamp(1.12rem, 1.4vw, 1.3rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.015em !important;
+  line-height: 1.35 !important;
+}
+
+/* 5. Section Subtitle / Lede Text */
+.gdas-lede,
+.elementor-widget-text-editor.gdas-section-intro p,
+.elementor-element-27a8a01 .elementor-widget-text-editor p,
+.elementor-element-0e9134f .elementor-widget-text-editor p,
+.elementor-element-287d573 .elementor-widget-text-editor p {
+  font-size: clamp(1.05rem, 1.25vw, 1.18rem) !important;
+  font-weight: 400 !important;
+  line-height: 1.65 !important;
+  color: #475569 !important;
+}
+
+/* 6. Regular Body & Description Text */
+.elementor-widget-icon-box .elementor-icon-box-description,
+.elementor-widget-accordion .elementor-tab-content,
+.elementor-widget-text-editor p {
+  font-size: 0.95rem !important;
+  font-weight: 400 !important;
+  line-height: 1.7 !important;
+  color: #64748B !important;
+}
+
+/* 7. Stats Numbers & Labels */
+.elementor-element-763c2fd .elementor-icon-box-title {
+  font-size: 1.22rem !important;
+  font-weight: 700 !important;
+  color: #0E1113 !important;
+  letter-spacing: -0.015em !important;
+}
+
+.elementor-element-763c2fd .elementor-icon-box-description {
+  font-size: 0.9rem !important;
+  line-height: 1.6 !important;
+  color: #64748B !important;
+}
+
+/* ==========================================================================
+   SPG Leaders Scroll-Driven Text Reveal & Dimming Interaction
+   ========================================================================== */
+.vamtam-tra-word,
+.gdas-scrub-word {
+  display: inline-block;
+  opacity: 0.28;
+  transition: opacity 0.12s cubic-bezier(0.16, 1, 0.3, 1), color 0.12s ease;
+  will-change: opacity;
+}
+
+.vamtam-tra-word.active,
+.gdas-scrub-word.active {
+  opacity: 1 !important;
+}
+
+/* Reading Viewport Focus for Cards and Blocks */
+.gdas-scroll-focus-item {
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s ease, filter 0.4s ease !important;
+  will-change: opacity, transform;
+}
+
+.gdas-scroll-focus-item.gdas-dimmed {
+  opacity: 0.38 !important;
+  filter: saturate(0.85) !important;
+}
+
+.gdas-scroll-focus-item.gdas-in-focus,
+.gdas-scroll-focus-item:hover {
+  opacity: 1 !important;
+  filter: saturate(1) !important;
 }

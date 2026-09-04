@@ -249,4 +249,133 @@ document.addEventListener('DOMContentLoaded', function() {
             closeFlyout();
         }
     });
+
+    // =========================================================
+    // 7. SPG Leaders Scroll-Driven Text Reveal & Dimming Engine
+    // =========================================================
+    // A. Word-by-Word Continuous Text Reveal Scrub
+    const scrubHeadings = document.querySelectorAll(
+        '.elementor-element-fa0a00d h2, .elementor-element-fa0a00d .elementor-heading-title, .vamtam-has-text-reveal-anim, .gdas-text-reveal'
+    );
+
+    const scrubWordsList = [];
+
+    scrubHeadings.forEach(heading => {
+        // Only wrap once
+        if (heading.getAttribute('data-scrub-ready') === 'true') return;
+
+        const rawText = heading.textContent.trim();
+        if (!rawText) return;
+
+        const words = rawText.split(/\s+/);
+        heading.innerHTML = '';
+        heading.setAttribute('data-scrub-ready', 'true');
+        heading.style.opacity = '1';
+
+        const wordsInHeading = [];
+        words.forEach(word => {
+            const span = document.createElement('span');
+            span.className = 'vamtam-tra-word gdas-scrub-word';
+            span.textContent = word + ' ';
+            heading.appendChild(span);
+            wordsInHeading.push(span);
+        });
+
+        scrubWordsList.push({
+            container: heading,
+            words: wordsInHeading
+        });
+    });
+
+    // B. Card & Section Reading Focus Observer
+    const focusItems = document.querySelectorAll(
+        '.elementor-element-763c2fd .elementor-widget-icon-box, ' +
+        '.elementor-element-27a8a01 .elementor-widget-icon-box, ' +
+        '.gdas-section-black .elementor-widget-icon-box, ' +
+        '.elementor-element-0e9134f .elementor-widget-icon-box, ' +
+        '.elementor-element-287d573 .elementor-widget-icon-box, ' +
+        '.elementor-widget-accordion .elementor-accordion-item'
+    );
+
+    focusItems.forEach(item => {
+        item.classList.add('gdas-scroll-focus-item');
+    });
+
+    // High Performance Scroll Handler (requestAnimationFrame)
+    let isTicking = false;
+
+    function updateScrollInteractions() {
+        const vHeight = window.innerHeight;
+        const targetGazeY = vHeight * 0.48; // Eye-level focus center
+        const focusRange = vHeight * 0.38;
+
+        // 1. Update Word Scrub Opacity
+        scrubWordsList.forEach(group => {
+            const groupRect = group.container.getBoundingClientRect();
+            // Check if group is anywhere near the viewport
+            if (groupRect.bottom > -100 && groupRect.top < vHeight + 100) {
+                group.words.forEach(wordSpan => {
+                    const wRect = wordSpan.getBoundingClientRect();
+                    const wordCenterY = wRect.top + (wRect.height * 0.5);
+                    const dist = Math.abs(wordCenterY - targetGazeY);
+
+                    // Near target gaze center -> 1.0; moving away -> 0.28
+                    let opacity = 1 - (dist / focusRange) * 0.72;
+                    if (opacity < 0.28) opacity = 0.28;
+                    if (opacity > 1) opacity = 1;
+
+                    wordSpan.style.opacity = opacity.toFixed(3);
+                });
+            }
+        });
+
+        // 2. Update Card / Section Dimming Focus
+        const focusTopThreshold = vHeight * 0.12;
+        const focusBottomThreshold = vHeight * 0.88;
+
+        focusItems.forEach(item => {
+            const rect = item.getBoundingClientRect();
+            const itemCenterY = rect.top + (rect.height * 0.5);
+
+            // If item center is in the active reading zone
+            if (itemCenterY >= focusTopThreshold && itemCenterY <= focusBottomThreshold) {
+                item.classList.add('gdas-in-focus');
+                item.classList.remove('gdas-dimmed');
+            } else {
+                item.classList.remove('gdas-in-focus');
+                item.classList.add('gdas-dimmed');
+            }
+        });
+
+        isTicking = false;
+    }
+
+    function onScroll() {
+        if (!isTicking) {
+            window.requestAnimationFrame(updateScrollInteractions);
+            isTicking = true;
+        }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    // Accordion Click Robustness
+    document.addEventListener('click', function(e) {
+        const title = e.target.closest('.elementor-widget-accordion .elementor-tab-title');
+        if (!title) return;
+        const content = title.nextElementSibling;
+        if (content && content.classList.contains('elementor-tab-content')) {
+            setTimeout(() => {
+                const isActive = title.classList.contains('elementor-active');
+                if (isActive) {
+                    content.style.display = 'block';
+                }
+            }, 50);
+        }
+    });
+
+    // Initial pass on load
+    updateScrollInteractions();
+    setTimeout(updateScrollInteractions, 300);
 });

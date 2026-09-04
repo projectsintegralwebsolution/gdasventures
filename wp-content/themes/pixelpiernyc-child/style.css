@@ -26,6 +26,7 @@ Text Domain: pixelpiernyc-child
   --gdas-text-body: #374151;
   --gdas-text-muted: #64748B;
   --gdas-text-light: #94A3B8;
-  --gdas-font-serif: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
+  --gdas-font-serif: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --gdas-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --gdas-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }

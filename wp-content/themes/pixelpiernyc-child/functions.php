@@ -7,10 +7,10 @@ ini_set('display_startup_errors', '0');
 
 add_action( 'wp_enqueue_scripts', 'gdas_enqueue_scripts', 20 );
 function gdas_enqueue_scripts() {
-    // Google Fonts: Playfair Display + Plus Jakarta Sans
+    // Google Fonts: Plus Jakarta Sans (Standard for PixelPier / SPG Leaders)
     wp_enqueue_style(
         'gdas-google-fonts',
-        'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap',
+        'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap',
         [],
         null
     );
@@ -23,6 +23,14 @@ function gdas_enqueue_scripts() {
         '6.5.1'
     );
 
+    // PixelPier Native Theme Icons
+    wp_enqueue_style(
+        'pixelpier-theme-icons',
+        get_stylesheet_directory_uri() . '/assets/theme-icons/style.css',
+        [],
+        '1.0.0'
+    );
+
     // Parent theme style
     wp_enqueue_style( 'pixelpiernyc-parent', get_template_directory_uri() . '/style.css' );
 
@@ -30,7 +38,7 @@ function gdas_enqueue_scripts() {
     wp_enqueue_style(
         'gdas-editorial-style',
         get_stylesheet_directory_uri() . '/assets/css/gdas-editorial.css',
-        ['pixelpiernyc-parent', 'gdas-google-fonts', 'font-awesome-6'],
+        ['pixelpiernyc-parent', 'gdas-google-fonts', 'font-awesome-6', 'pixelpier-theme-icons'],
         filemtime( get_stylesheet_directory() . '/assets/css/gdas-editorial.css' )
     );
 
