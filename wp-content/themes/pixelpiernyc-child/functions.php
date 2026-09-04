@@ -23,11 +23,14 @@ function gdas_enqueue_scripts() {
         '6.5.1'
     );
 
+    // Parent theme style
+    wp_enqueue_style( 'pixelpiernyc-parent', get_template_directory_uri() . '/style.css' );
+
     // Child theme editorial stylesheet
     wp_enqueue_style(
         'gdas-editorial-style',
         get_stylesheet_directory_uri() . '/assets/css/gdas-editorial.css',
-        ['gdas-google-fonts', 'font-awesome-6'],
+        ['pixelpiernyc-parent', 'gdas-google-fonts', 'font-awesome-6'],
         filemtime( get_stylesheet_directory() . '/assets/css/gdas-editorial.css' )
     );
 
