@@ -165,7 +165,7 @@ function gdas_enrich_inner_page_icons( $content ) {
         'Thoughtful use of capital' => 'fa-scale-balanced',
     ];
     foreach ( $perspective_icons as $title => $icon ) {
-        if ( strpos( $content, $title ) !== false && strpos( $content, 'gdas-framework-icon-wrap' ) === false ) {
+        if ( strpos( $content, $title ) !== false && strpos( $content, $icon ) === false ) {
             $icon_badge = '<div class="gdas-framework-icon-wrap"><i class="fa-solid ' . esc_attr( $icon ) . '"></i></div>';
             $content = preg_replace(
                 '/(<h[34][^>]*>\s*' . preg_quote( $title, '/' ) . ')/is',
@@ -212,7 +212,7 @@ function gdas_enrich_inner_page_icons( $content ) {
         ],
     ];
     foreach ( $sector_icons as $badgeText => $data ) {
-        if ( strpos( $content, $badgeText ) !== false && strpos( $content, 'gdas-sector-icon-badge' ) === false ) {
+        if ( strpos( $content, $badgeText ) !== false && strpos( $content, 'gdas-sector-icon-badge"><i class="fa-solid ' . $data['icon'] ) === false ) {
             $content = preg_replace(
                 '/(<h6[^>]*>)\s*' . preg_quote( $badgeText, '/' ) . '(\s*<\/h6>)/is',
                 '$1<span class="gdas-sector-icon-badge"><i class="fa-solid ' . esc_attr( $data['icon'] ) . '"></i></span> ' . $badgeText . '$2',
@@ -237,25 +237,31 @@ function gdas_enrich_inner_page_icons( $content ) {
     }
 
     // 3. Contact Page: Email, Platform, LinkedIn, and Assurance Badges
-    if ( strpos( $content, 'contact@gdasventures.com' ) !== false && strpos( $content, 'gdas-contact-icon-bubble' ) === false ) {
+    if ( strpos( $content, 'contact@gdasventures.com' ) !== false && strpos( $content, 'fa-envelope' ) === false ) {
         $content = preg_replace(
-            '/<a href="mailto:contact@gdasventures\.com">contact@gdasventures\.com<\/a>/is',
+            '/<h4[^>]*>\s*contact@gdasventures\.com\s*<\/h4>/is',
             '<div class="gdas-contact-item-row"><div class="gdas-contact-icon-bubble"><i class="fa-solid fa-envelope"></i></div><div class="gdas-contact-info-block"><span class="gdas-contact-sublbl">DIRECT INQUIRIES</span><a href="mailto:contact@gdasventures.com" class="gdas-contact-link">contact@gdasventures.com</a></div></div>',
             $content,
             1
         );
+    }
+    if ( strpos( $content, 'Private Investment Platform · India' ) !== false && strpos( $content, 'fa-landmark' ) === false ) {
         $content = preg_replace(
-            '/<p>Private Investment Platform · India<\/p>/is',
+            '/<p[^>]*>\s*Private Investment Platform · India\s*<\/p>/is',
             '<div class="gdas-contact-item-row"><div class="gdas-contact-icon-bubble"><i class="fa-solid fa-landmark"></i></div><div class="gdas-contact-info-block"><span class="gdas-contact-sublbl">PLATFORM MODEL</span><span class="gdas-contact-val">Private Investment Platform · India</span></div></div>',
             $content,
             1
         );
+    }
+    if ( strpos( $content, 'LinkedIn Profile ↗' ) !== false && strpos( $content, 'fa-linkedin' ) === false ) {
         $content = preg_replace(
             '/<span class="elementor-button-text">LinkedIn Profile ↗<\/span>/is',
             '<span class="elementor-button-text"><i class="fa-brands fa-linkedin" style="margin-right: 0.5rem;"></i> LinkedIn Profile ↗</span>',
             $content,
             1
         );
+    }
+    if ( strpos( $content, 'Introduce Your Company' ) !== false && strpos( $content, 'gdas-founder-guarantees-grid' ) === false ) {
         $guarantees = '<div class="gdas-founder-guarantees-grid">
             <div class="gdas-guarantee-card"><i class="fa-solid fa-user-shield"></i><span>Direct Partner Review</span></div>
             <div class="gdas-guarantee-card"><i class="fa-solid fa-lock"></i><span>Strict Confidentiality</span></div>
