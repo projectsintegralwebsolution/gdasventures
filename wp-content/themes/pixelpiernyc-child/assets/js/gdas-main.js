@@ -387,6 +387,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 6. Inside Pages Luxury Iconography Fallback
     function initInsidePageIcons() {
+        if (document.body.classList.contains('home')) return;
+
         const perspectiveIcons = {
             'Founders who know the problem inside out': 'fa-user-gear',
             'Something genuinely difficult to replicate': 'fa-shield-halved',
@@ -398,7 +400,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.querySelectorAll('h4, h3').forEach(h => {
             const txt = h.textContent.trim();
-            if (perspectiveIcons[txt] && !h.parentElement.querySelector('.gdas-framework-icon-wrap')) {
+            if (perspectiveIcons[txt]) {
+                if (h.previousElementSibling && h.previousElementSibling.classList.contains('gdas-framework-icon-wrap')) return;
+                if (h.parentElement && h.parentElement.querySelector('.gdas-framework-icon-wrap')) return;
+
                 const iconDiv = document.createElement('div');
                 iconDiv.className = 'gdas-framework-icon-wrap';
                 iconDiv.innerHTML = `<i class="fa-solid ${perspectiveIcons[txt]}"></i>`;

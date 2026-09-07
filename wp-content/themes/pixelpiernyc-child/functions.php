@@ -151,7 +151,7 @@ function gdas_add_favicon_head() {
 // Enrich Inside Pages with SPG Leaders Iconography
 add_filter( 'the_content', 'gdas_enrich_inner_page_icons', 20 );
 function gdas_enrich_inner_page_icons( $content ) {
-    if ( is_admin() ) {
+    if ( is_admin() || is_front_page() || is_home() ) {
         return $content;
     }
 
@@ -173,66 +173,6 @@ function gdas_enrich_inner_page_icons( $content ) {
                 $content,
                 1
             );
-        }
-    }
-
-    // 2. Investments Page: Sector Badges & Meta Highlights
-    $sector_icons = [
-        'ADVANCED COMPOSITES · AEROSPACE · DEFENCE' => [
-            'icon' => 'fa-jet-fighter-up',
-            'meta' => [
-                ['fa-industry', 'Advanced Composites'],
-                ['fa-location-dot', 'Goa, India'],
-                ['fa-certificate', 'Ariane 5 & Defence Certified'],
-            ]
-        ],
-        'NUCLEAR ENERGY · HEAVY ENGINEERING' => [
-            'icon' => 'fa-atom',
-            'meta' => [
-                ['fa-atom', 'Heavy Nuclear Equipment'],
-                ['fa-location-dot', 'India'],
-                ['fa-bolt', 'NPCIL Base-Load Power'],
-            ]
-        ],
-        'SPECIALTY GASES · INFRASTRUCTURE' => [
-            'icon' => 'fa-flask-vial',
-            'meta' => [
-                ['fa-flask-vial', 'High-Purity Helium & Rare Gases'],
-                ['fa-location-dot', 'India'],
-                ['fa-microchip', 'MRI, Tech & Semiconductors'],
-            ]
-        ],
-        'SPACE TECHNOLOGY · LAUNCH VEHICLES' => [
-            'icon' => 'fa-rocket',
-            'meta' => [
-                ['fa-rocket', 'Orbital Small-Sat Launchers'],
-                ['fa-location-dot', 'Chennai, India'],
-                ['fa-fire', '3D-Printed Semi-Cryo Engine'],
-            ]
-        ],
-    ];
-    foreach ( $sector_icons as $badgeText => $data ) {
-        if ( strpos( $content, $badgeText ) !== false && strpos( $content, 'gdas-sector-icon-badge"><i class="fa-solid ' . $data['icon'] ) === false ) {
-            $content = preg_replace(
-                '/(<h6[^>]*>)\s*' . preg_quote( $badgeText, '/' ) . '(\s*<\/h6>)/is',
-                '$1<span class="gdas-sector-icon-badge"><i class="fa-solid ' . esc_attr( $data['icon'] ) . '"></i></span> ' . $badgeText . '$2',
-                $content,
-                1
-            );
-            $metaHtml = '<div class="gdas-portfolio-meta-bar">';
-            foreach ( $data['meta'] as $item ) {
-                $metaHtml .= '<span class="gdas-meta-pill"><i class="fa-solid ' . esc_attr( $item[0] ) . '"></i> ' . esc_html( $item[1] ) . '</span>';
-            }
-            $metaHtml .= '</div>';
-
-            if ( strpos( $content, $data['meta'][0][1] ) === false ) {
-                $content = preg_replace(
-                    '/(<div[^>]*elementor-widget-button[^>]*>)/is',
-                    $metaHtml . '$1',
-                    $content,
-                    1
-                );
-            }
         }
     }
 
