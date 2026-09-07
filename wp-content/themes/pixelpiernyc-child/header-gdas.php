@@ -16,9 +16,9 @@
 <!-- Sticky Navigation Bar -->
 <header class="gdas-header" id="gdas-header">
     <div class="gdas-container gdas-header-inner">
-        <!-- Prominent Transparent Logo -->
+        <!-- Prominent Transparent Logo (Enlarged +20%) -->
         <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="gdas-brand-logo" aria-label="G Das Ventures Home">
-            <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/logo.png' ); ?>" alt="G Das Ventures" class="gdas-main-logo-img" width="260" height="58">
+            <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/logo.png' ); ?>" alt="G Das Ventures" class="gdas-main-logo-img" width="320" height="72">
         </a>
 
         <!-- Header Actions: Only Clean SPG Burger Menu Button -->
@@ -40,8 +40,8 @@
     <div class="gdas-flyout-dialog">
         <!-- Flyout Header -->
         <div class="gdas-flyout-top">
-            <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="gdas-flyout-brand">
-                <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/logo.png' ); ?>" alt="G Das Ventures" width="240" height="54">
+            <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="gdas-flyout-brand" aria-label="G Das Ventures Home">
+                <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/logo.png' ); ?>" alt="G Das Ventures" class="gdas-flyout-logo-img" width="240" height="52">
             </a>
             <button class="gdas-flyout-close-btn" id="gdas-flyout-close" aria-label="Close Menu">
                 <span class="close-icon">✕</span>

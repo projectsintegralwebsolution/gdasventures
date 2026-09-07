@@ -254,14 +254,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // 7. SPG Leaders Scroll-Driven Text Reveal & Dimming Engine
     // =========================================================
     // A. Word-by-Word Continuous Text Reveal Scrub
+    // Only target primary statement h2, strictly exclude eyebrows/h6
     const scrubHeadings = document.querySelectorAll(
-        '.elementor-element-fa0a00d h2, .elementor-element-fa0a00d .elementor-heading-title, .vamtam-has-text-reveal-anim, .gdas-text-reveal'
+        '.elementor-element-fa0a00d h2.elementor-heading-title, .elementor-element-fa0a00d h2, .vamtam-has-text-reveal-anim:not(h6), .gdas-text-reveal'
     );
 
     const scrubWordsList = [];
 
     scrubHeadings.forEach(heading => {
-        // Only wrap once
+        // Exclude eyebrows, h6, and category tags
+        if (heading.tagName.toLowerCase() === 'h6' || heading.classList.contains('gdas-eyebrow') || heading.closest('.gdas-eyebrow')) return;
         if (heading.getAttribute('data-scrub-ready') === 'true') return;
 
         const rawText = heading.textContent.trim();
@@ -273,11 +275,15 @@ document.addEventListener('DOMContentLoaded', function() {
         heading.style.opacity = '1';
 
         const wordsInHeading = [];
-        words.forEach(word => {
+        words.forEach((word, idx) => {
             const span = document.createElement('span');
             span.className = 'vamtam-tra-word gdas-scrub-word';
-            span.textContent = word + ' ';
+            span.textContent = word;
             heading.appendChild(span);
+            // Add a genuine text node space between words so text never runs together
+            if (idx < words.length - 1) {
+                heading.appendChild(document.createTextNode(' '));
+            }
             wordsInHeading.push(span);
         });
 
