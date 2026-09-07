@@ -151,9 +151,32 @@ function gdas_add_favicon_head() {
 // Automatic One-Time Sync for 100% Native Elementor Architecture
 add_action( 'init', 'gdas_sync_native_elementor_data' );
 function gdas_sync_native_elementor_data() {
-    if ( get_option( 'gdas_native_elementor_v2_synced' ) ) {
+    if ( get_option( 'gdas_native_elementor_v3_synced' ) && ! isset( $_GET['sync_trigger'] ) ) {
         return;
     }
+
+    // 0. Sync Global Kit Colors (Eliminate default #6EC1E4 Cyan Blue & Green)
+    $sync_kit_colors = function( $kit_id ) {
+        $settings = get_post_meta( $kit_id, '_elementor_page_settings', true );
+        if ( ! is_array( $settings ) ) $settings = [];
+        $system_colors = [
+            [ '_id' => 'primary', 'title' => 'Primary', 'color' => '#15191C' ],
+            [ '_id' => 'secondary', 'title' => 'Secondary', 'color' => '#4A5056' ],
+            [ '_id' => 'text', 'title' => 'Text', 'color' => '#64748B' ],
+            [ '_id' => 'accent', 'title' => 'Accent', 'color' => '#B88E44' ],
+        ];
+        if ( ! empty( $settings['system_colors'] ) ) {
+            foreach ( $settings['system_colors'] as $sc ) {
+                if ( strpos( $sc['_id'], 'vamtam' ) !== false ) {
+                    $system_colors[] = $sc;
+                }
+            }
+        }
+        $settings['system_colors'] = $system_colors;
+        update_post_meta( $kit_id, '_elementor_page_settings', $settings );
+    };
+    $sync_kit_colors( 10 );
+    $sync_kit_colors( 8 );
 
     // 1. Home Page
     $home_id = get_option( 'page_on_front' );
@@ -186,6 +209,15 @@ function gdas_sync_native_elementor_data() {
                     }
                     if ( ! empty( $el['settings']['image']['url'] ) ) {
                         $el['settings']['image']['url'] = str_replace( 'http://localhost/wordpress/', 'https://grey-tapir-780392.hostingersite.com/', $el['settings']['image']['url'] );
+                    }
+                    if ( ( $el['widgetType'] ?? '' ) === 'icon-box' ) {
+                        if ( empty( $el['settings']['title_color'] ) ) {
+                            $el['settings']['title_color'] = '#15191C';
+                        }
+                        if ( empty( $el['settings']['description_color'] ) ) {
+                            $el['settings']['description_color'] = '#64748B';
+                        }
+                        $updated = true;
                     }
                     if ( ! empty( $el['elements'] ) ) {
                         $walker( $el['elements'] );
@@ -429,67 +461,85 @@ function gdas_sync_native_elementor_data() {
             $contact_walker = function( &$elements ) use ( &$contact_walker ) {
                 foreach ( $elements as &$el ) {
                     if ( ( $el['id'] ?? '' ) === '29d9cf4' ) {
-                        $has_b = false;
-                        foreach ( $el['elements'] as $sub ) {
+                        $guar_elements = [
+                            [
+                                'id' => 'guar_1',
+                                'elType' => 'widget',
+                                'widgetType' => 'icon-box',
+                                'settings' => [
+                                    'selected_icon' => ['value' => 'fas fa-user-shield', 'library' => 'fa-solid'],
+                                    'title_text' => 'Direct Partner Review',
+                                    'description_text' => '',
+                                    'title_size' => 'h6',
+                                    'position' => 'left',
+                                    'view' => 'default',
+                                    'primary_color' => '#B88E44',
+                                    'title_color' => '#4A5056'
+                                ]
+                            ],
+                            [
+                                'id' => 'guar_2',
+                                'elType' => 'widget',
+                                'widgetType' => 'icon-box',
+                                'settings' => [
+                                    'selected_icon' => ['value' => 'fas fa-lock', 'library' => 'fa-solid'],
+                                    'title_text' => 'Strict Confidentiality',
+                                    'description_text' => '',
+                                    'title_size' => 'h6',
+                                    'position' => 'left',
+                                    'view' => 'default',
+                                    'primary_color' => '#B88E44',
+                                    'title_color' => '#4A5056'
+                                ]
+                            ],
+                            [
+                                'id' => 'guar_3',
+                                'elType' => 'widget',
+                                'widgetType' => 'icon-box',
+                                'settings' => [
+                                    'selected_icon' => ['value' => 'fas fa-bolt', 'library' => 'fa-solid'],
+                                    'title_text' => 'Rapid Response',
+                                    'description_text' => '',
+                                    'title_size' => 'h6',
+                                    'position' => 'left',
+                                    'view' => 'default',
+                                    'primary_color' => '#B88E44',
+                                    'title_color' => '#4A5056'
+                                ]
+                            ]
+                        ];
+                        $badges_c = [
+                            'id' => 'gdas_contact_guarantees',
+                            'elType' => 'container',
+                            'settings' => [
+                                'content_width' => 'full',
+                                'css_classes' => 'gdas-founder-guarantees-grid',
+                                'flex_direction' => 'row',
+                                'flex_wrap' => 'nowrap',
+                                'flex_justify_content' => 'space-between',
+                                'flex_align_items' => 'center',
+                                'margin' => ['unit' => 'px', 'top' => '16', 'right' => '0', 'bottom' => '24', 'left' => '0', 'isLinked' => false],
+                                'padding' => ['unit' => 'px', 'top' => '12', 'right' => '16', 'bottom' => '12', 'left' => '16', 'isLinked' => false],
+                                'background_background' => 'classic',
+                                'background_color' => 'rgba(184, 142, 68, 0.04)',
+                                'border_border' => 'solid',
+                                'border_width' => ['unit' => 'px', 'top' => 1, 'right' => 1, 'bottom' => 1, 'left' => 1, 'isLinked' => true],
+                                'border_color' => 'rgba(184, 142, 68, 0.15)',
+                                'border_radius' => ['unit' => 'px', 'top' => '8', 'right' => '8', 'bottom' => '8', 'left' => '8', 'isLinked' => true]
+                            ],
+                            'elements' => $guar_elements
+                        ];
+
+                        $found_key = false;
+                        foreach ( $el['elements'] as $k => &$sub ) {
                             if ( ( $sub['id'] ?? '' ) === 'gdas_contact_guarantees' ) {
-                                $has_b = true;
+                                $found_key = $k;
                                 break;
                             }
                         }
-                        if ( ! $has_b ) {
-                            $badges_c = [
-                                'id' => 'gdas_contact_guarantees',
-                                'elType' => 'container',
-                                'settings' => [
-                                    'content_width' => 'full',
-                                    'flex_direction' => 'row',
-                                    'flex_wrap' => 'nowrap',
-                                    'flex_justify_content' => 'space-between',
-                                    'flex_gap' => ['unit' => 'px', 'size' => 12],
-                                    'margin' => ['unit' => 'px', 'top' => '0', 'right' => '0', 'bottom' => '24', 'left' => '0']
-                                ],
-                                'elements' => [
-                                    [
-                                        'id' => 'guar_1',
-                                        'elType' => 'widget',
-                                        'widgetType' => 'icon-box',
-                                        'settings' => [
-                                            'selected_icon' => ['value' => 'fas fa-user-shield', 'library' => 'fa-solid'],
-                                            'title_text' => 'Direct Partner Review',
-                                            'title_size' => 'h6',
-                                            'position' => 'left',
-                                            'view' => 'default',
-                                            'primary_color' => '#B88E44'
-                                        ]
-                                    ],
-                                    [
-                                        'id' => 'guar_2',
-                                        'elType' => 'widget',
-                                        'widgetType' => 'icon-box',
-                                        'settings' => [
-                                            'selected_icon' => ['value' => 'fas fa-lock', 'library' => 'fa-solid'],
-                                            'title_text' => 'Strict Confidentiality',
-                                            'title_size' => 'h6',
-                                            'position' => 'left',
-                                            'view' => 'default',
-                                            'primary_color' => '#B88E44'
-                                        ]
-                                    ],
-                                    [
-                                        'id' => 'guar_3',
-                                        'elType' => 'widget',
-                                        'widgetType' => 'icon-box',
-                                        'settings' => [
-                                            'selected_icon' => ['value' => 'fas fa-bolt', 'library' => 'fa-solid'],
-                                            'title_text' => 'Rapid Response',
-                                            'title_size' => 'h6',
-                                            'position' => 'left',
-                                            'view' => 'default',
-                                            'primary_color' => '#B88E44'
-                                        ]
-                                    ]
-                                ]
-                            ];
+                        if ( $found_key !== false ) {
+                            $el['elements'][$found_key] = $badges_c;
+                        } else {
                             $form_idx = count( $el['elements'] ) - 1;
                             array_splice( $el['elements'], $form_idx, 0, [$badges_c] );
                         }
@@ -520,6 +570,10 @@ function gdas_sync_native_elementor_data() {
             ];
             $persp_walker = function( &$elements ) use ( &$persp_walker, $f_icons ) {
                 foreach ( $elements as &$el ) {
+                    if ( ( $el['widgetType'] ?? '' ) === 'icon-box' ) {
+                        $el['settings']['title_color'] = '#15191C';
+                        $el['settings']['description_color'] = '#64748B';
+                    }
                     if ( ! empty( $el['elements'] ) && count( $el['elements'] ) === 2 ) {
                         $h_w = null;
                         $t_w = null;
@@ -544,7 +598,9 @@ function gdas_sync_native_elementor_data() {
                                         'position' => 'top',
                                         'view' => 'stacked',
                                         'primary_color' => 'rgba(184, 142, 68, 0.12)',
-                                        'secondary_color' => '#B88E44'
+                                        'secondary_color' => '#B88E44',
+                                        'title_color' => '#15191C',
+                                        'description_color' => '#64748B'
                                     ]
                                 ];
                                 $el['elements'] = [$ib];
@@ -566,10 +622,14 @@ function gdas_sync_native_elementor_data() {
     $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'http://localhost/wordpress/', 'https://grey-tapir-780392.hostingersite.com/') WHERE meta_key = '_elementor_data'" );
     $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, '/wordpress/investments/', '/investments/') WHERE meta_key = '_elementor_data'" );
 
-    // Clear Elementor CSS cache
+    // Clear Elementor CSS cache & regenerate Kit CSS
     if ( class_exists( '\Elementor\Plugin' ) ) {
         \Elementor\Plugin::$instance->files_manager->clear_cache();
+        if ( class_exists( '\Elementor\Core\Files\CSS\Post' ) ) {
+            $kit_css = new \Elementor\Core\Files\CSS\Post( 10 );
+            $kit_css->update();
+        }
     }
 
-    update_option( 'gdas_native_elementor_v2_synced', time() );
+    update_option( 'gdas_native_elementor_v3_synced', time() );
 }

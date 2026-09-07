@@ -2716,10 +2716,15 @@ body, button, input, select, textarea,
 .elementor-widget-icon-box .elementor-icon-box-title,
 .elementor-widget-icon-box .elementor-icon-box-title span,
 .gdas-card-title {
+  color: #15191C;
   font-size: clamp(1.12rem, 1.4vw, 1.3rem) !important;
   font-weight: 700 !important;
   letter-spacing: -0.015em !important;
   line-height: 1.35 !important;
+}
+
+.elementor-widget-heading .elementor-heading-title {
+  color: #15191C;
 }
 
 /* 5. Section Subtitle / Lede Text */
@@ -2940,28 +2945,95 @@ body, button, input, select, textarea,
 }
 
 .gdas-founder-guarantees-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 0.65rem;
-  margin-top: 1.75rem;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 0.75rem 1rem !important;
+  margin: 1.25rem 0 1.85rem 0 !important;
+  background: rgba(184, 142, 68, 0.04) !important;
+  border: 1px solid rgba(184, 142, 68, 0.15) !important;
+  border-radius: 8px !important;
 }
 
-.gdas-guarantee-card {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  padding: 0.75rem 0.95rem;
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(21, 25, 28, 0.08);
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--gdas-text-secondary);
+@media (max-width: 600px) {
+  .gdas-founder-guarantees-grid {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.6rem !important;
+  }
 }
 
-.gdas-guarantee-card i {
-  color: var(--gdas-gold);
-  font-size: 0.95rem;
+.gdas-founder-guarantees-grid .elementor-widget-icon-box {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  flex: 1 1 auto !important;
+}
+
+.gdas-founder-guarantees-grid .elementor-icon-box-wrapper {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+.gdas-founder-guarantees-grid .elementor-icon-box-icon {
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.gdas-founder-guarantees-grid .elementor-icon {
+  width: auto !important;
+  height: auto !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: var(--gdas-gold) !important;
+  font-size: 0.95rem !important;
+  line-height: 1 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+.gdas-founder-guarantees-grid .elementor-widget-icon-box:hover .elementor-icon {
+  background: transparent !important;
+  color: var(--gdas-gold) !important;
+  border: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.gdas-founder-guarantees-grid .elementor-icon-box-content {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.gdas-founder-guarantees-grid .elementor-icon-box-title,
+.gdas-founder-guarantees-grid .elementor-icon-box-title span,
+.gdas-founder-guarantees-grid h6.elementor-icon-box-title {
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  color: #4A5056 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
+  line-height: 1.2 !important;
+  letter-spacing: normal !important;
+}
+
+.gdas-founder-guarantees-grid .elementor-icon-box-description {
+  display: none !important;
 }
 
 /* 4. About Us Operating Principles */
