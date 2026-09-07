@@ -8,6 +8,12 @@
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Brand Favicons & Touch Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/favicon-32x32.png?v=' . filemtime( get_stylesheet_directory() . '/assets/images/favicon-32x32.png' ) ); ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/favicon-16x16.png?v=' . filemtime( get_stylesheet_directory() . '/assets/images/favicon-16x16.png' ) ); ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/apple-touch-icon.png?v=' . filemtime( get_stylesheet_directory() . '/assets/images/apple-touch-icon.png' ) ); ?>">
+    <link rel="icon" type="image/png" sizes="192x192" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/android-chrome-192x192.png?v=' . filemtime( get_stylesheet_directory() . '/assets/images/android-chrome-192x192.png' ) ); ?>">
+    <link rel="shortcut icon" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/favicon.ico?v=' . filemtime( get_stylesheet_directory() . '/assets/images/favicon.ico' ) ); ?>">
     <?php wp_head(); ?>
 </head>
 <body <?php body_class( 'gdas-site-body' ); ?>>

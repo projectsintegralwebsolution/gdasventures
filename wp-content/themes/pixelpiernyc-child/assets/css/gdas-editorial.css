@@ -2786,3 +2786,254 @@ body, button, input, select, textarea,
   opacity: 1 !important;
   filter: saturate(1) !important;
 }
+
+/* ==========================================================================
+   Inside Pages Iconography & Refinements (SPG Leaders Look)
+   ========================================================================== */
+
+/* 1. Perspective Underwriting Framework Icon Boxes */
+.gdas-framework-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: rgba(184, 142, 68, 0.12);
+  border: 1px solid rgba(184, 142, 68, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  color: var(--gdas-gold);
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+
+.e-con-child:hover .gdas-framework-icon-wrap,
+.gdas-framework-card:hover .gdas-framework-icon-wrap {
+  background: var(--gdas-gold);
+  color: #FFFFFF;
+  transform: scale(1.08) rotate(2deg);
+}
+
+/* 2. Investments Sector Badges & Meta Highlights */
+.gdas-sector-icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(184, 142, 68, 0.14);
+  color: var(--gdas-gold);
+  margin-right: 0.6rem;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.gdas-portfolio-meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.25rem 0 1.75rem 0;
+}
+
+.gdas-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  background: #FFFFFF;
+  border: 1px solid rgba(21, 25, 28, 0.10);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--gdas-navy);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.gdas-meta-pill:hover {
+  border-color: var(--gdas-gold);
+  background: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.gdas-meta-pill i {
+  color: var(--gdas-gold);
+  font-size: 0.9rem;
+}
+
+/* 3. Contact & Pitch Channels & Badges */
+.gdas-contact-item-row {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-bottom: 1.25rem;
+  padding: 1.1rem 1.35rem;
+  background: #FFFFFF;
+  border-radius: 12px;
+  border: 1px solid rgba(21, 25, 28, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  transition: all 0.25s ease;
+}
+
+.gdas-contact-item-row:hover {
+  border-color: rgba(184, 142, 68, 0.35);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+}
+
+.gdas-contact-icon-bubble {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: rgba(184, 142, 68, 0.12);
+  border: 1px solid rgba(184, 142, 68, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gdas-gold);
+  font-size: 19px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.gdas-contact-item-row:hover .gdas-contact-icon-bubble {
+  background: var(--gdas-gold);
+  color: #FFFFFF;
+  transform: scale(1.06);
+}
+
+.gdas-contact-info-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.gdas-contact-sublbl {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--gdas-gold);
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.gdas-contact-link {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--gdas-navy);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.gdas-contact-link:hover {
+  color: var(--gdas-gold);
+}
+
+.gdas-contact-val {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--gdas-navy);
+}
+
+.gdas-founder-guarantees-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.65rem;
+  margin-top: 1.75rem;
+}
+
+.gdas-guarantee-card {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 0.95rem;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(21, 25, 28, 0.08);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gdas-text-secondary);
+}
+
+.gdas-guarantee-card i {
+  color: var(--gdas-gold);
+  font-size: 0.95rem;
+}
+
+/* 4. About Us Operating Principles */
+.gdas-about-pillars-section {
+  padding: 5rem 0;
+  background: #FFFFFF;
+  border-top: 1px solid rgba(21, 25, 28, 0.08);
+  margin-top: 3.5rem;
+}
+
+.gdas-pillars-title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700;
+  margin: 0.75rem 0 1rem 0;
+  color: var(--gdas-navy);
+}
+
+.gdas-pillars-subhead {
+  max-width: 680px;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--gdas-text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.gdas-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.75rem;
+}
+
+.gdas-pillar-card {
+  padding: 2.25rem 2rem;
+  border-radius: 14px;
+  background: var(--gdas-bg-warm);
+  border: 1px solid rgba(21, 25, 28, 0.07);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gdas-pillar-card:hover {
+  transform: translateY(-4px);
+  background: #FFFFFF;
+  border-color: rgba(184, 142, 68, 0.35);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+}
+
+.gdas-pillar-icon-box {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: rgba(184, 142, 68, 0.12);
+  border: 1px solid rgba(184, 142, 68, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gdas-gold);
+  font-size: 24px;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.gdas-pillar-card:hover .gdas-pillar-icon-box {
+  background: var(--gdas-gold);
+  color: #FFFFFF;
+  transform: scale(1.08) rotate(3deg);
+}
+
+.gdas-pillar-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--gdas-navy);
+}
+
+.gdas-pillar-card p {
+  font-size: 0.94rem;
+  line-height: 1.65;
+  color: var(--gdas-text-secondary);
+  margin: 0;
+}
