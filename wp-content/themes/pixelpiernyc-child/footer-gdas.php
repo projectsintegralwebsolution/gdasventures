@@ -66,7 +66,7 @@
                 <strong>Disclaimer:</strong> The information presented on this website is for general informational purposes only. It does not constitute investment advice, an offer to sell, or a solicitation to purchase any security. References to investments do not indicate future performance.
             </div>
             <div class="gdas-footer-copyright-text">
-                &copy; <?php echo date( 'Y' ); ?> GDas Ventures. All rights reserved.
+                &copy; <?php echo date( 'Y' ); ?> GDas Ventures. All rights reserved. &bull; Developed by <a href="https://integralwebsolution.com/" target="_blank" rel="noopener" class="gdas-dev-credit">Integral Web Solution</a>
             </div>
         </div>
     </div>

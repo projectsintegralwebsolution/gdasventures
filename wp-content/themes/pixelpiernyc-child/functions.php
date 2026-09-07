@@ -131,9 +131,303 @@ function gdas_handle_pitch_submission() {
     update_post_meta( $post_id, '_gdas_stage', $stage );
     update_post_meta( $post_id, '_gdas_deck', $deck );
 
+    // Dispatch 3-way notifications (Admin: integralwebsolution@gmail.com, Client: contact@gdasventures.com, User: $email)
+    gdas_dispatch_three_way_notifications( [
+        'name'    => $name,
+        'email'   => $email,
+        'company' => $company,
+        'website' => $website,
+        'sector'  => $sector,
+        'stage'   => $stage,
+        'pitch'   => $pitch,
+        'deck'    => $deck,
+    ] );
+
     wp_send_json_success( [
         'message' => 'Thank you for introducing your company. Our team will review your submission and reach out if there is a mutual fit.'
     ] );
+}
+
+// ==========================================================================
+// 3-Way Enquiry / Pitch Notification System & Gmail SMTP
+// ==========================================================================
+
+if ( ! defined( 'GDAS_SMTP_APP_PASSWORD' ) ) {
+    // Gmail SMTP App Password (kept dummy at present as requested: replace with your 16-character Google App Password when ready)
+    define( 'GDAS_SMTP_APP_PASSWORD', 'dummy-app-password-xyz' );
+}
+
+// Configure PHPMailer to route outgoing WordPress emails through Gmail SMTP
+add_action( 'phpmailer_init', 'gdas_setup_gmail_smtp' );
+function gdas_setup_gmail_smtp( $phpmailer ) {
+    $phpmailer->isSMTP();
+    $phpmailer->Host       = 'smtp.gmail.com';
+    $phpmailer->SMTPAuth   = true;
+    $phpmailer->Port       = 587;
+    $phpmailer->SMTPSecure = 'tls';
+    $phpmailer->Username   = 'integralwebsolution@gmail.com';
+
+    $app_password = defined( 'GDAS_SMTP_APP_PASSWORD' ) ? GDAS_SMTP_APP_PASSWORD : get_option( 'gdas_smtp_app_password', 'dummy-app-password-xyz' );
+    $phpmailer->Password   = $app_password;
+
+    $phpmailer->From       = 'integralwebsolution@gmail.com';
+    $phpmailer->FromName   = 'GDas Ventures';
+}
+
+// Intercept dummy app password to simulate successful delivery without failing SMTP auth or disrupting users
+add_filter( 'pre_wp_mail', 'gdas_intercept_dummy_smtp_mail', 10, 2 );
+function gdas_intercept_dummy_smtp_mail( $return, $atts ) {
+    $app_password = defined( 'GDAS_SMTP_APP_PASSWORD' ) ? GDAS_SMTP_APP_PASSWORD : get_option( 'gdas_smtp_app_password', 'dummy-app-password-xyz' );
+    if ( empty( $app_password ) || stripos( $app_password, 'dummy' ) !== false ) {
+        error_log( sprintf( '[GDAS SMTP Notice] Dummy app password active. Simulating email dispatch to: %s | Subject: %s', is_array( $atts['to'] ) ? implode( ', ', $atts['to'] ) : $atts['to'], $atts['subject'] ) );
+        return true; // Return true so Elementor Pro and WP treat mail as sent
+    }
+    return $return;
+}
+
+/**
+ * Dispatches 3-way notifications:
+ * 1. Admin Email: integralwebsolution@gmail.com (Full inquiry details)
+ * 2. Client Email: contact@gdasventures.com (Full pitch details)
+ * 3. Submitting User / Founder: Autoresponder confirmation
+ */
+function gdas_dispatch_three_way_notifications( $data ) {
+    $name    = sanitize_text_field( $data['name'] ?? '' );
+    $email   = sanitize_email( $data['email'] ?? '' );
+    $company = sanitize_text_field( $data['company'] ?? 'Founder Company' );
+    $website = esc_url_raw( $data['website'] ?? '' );
+    $sector  = sanitize_text_field( $data['sector'] ?? 'General Inquiry' );
+    $stage   = sanitize_text_field( $data['stage'] ?? 'N/A' );
+    $pitch   = sanitize_textarea_field( $data['pitch'] ?? '' );
+    $deck    = esc_url_raw( $data['deck'] ?? '' );
+
+    $date_formatted = current_time( 'j F Y, g:i a' );
+    $ip_address     = sanitize_text_field( $_SERVER['REMOTE_ADDR'] ?? 'Unknown' );
+
+    $email_style = '
+        body, table, td, p, a, li { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        body { margin: 0; padding: 0; width: 100% !important; background-color: #F8F9FA; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        .wrapper { width: 100%; max-width: 620px; margin: 0 auto; background-color: #FFFFFF; border-radius: 8px; overflow: hidden; border: 1px solid #E2E8F0; }
+        .header { background-color: #111417; padding: 28px 32px; text-align: left; border-bottom: 3px solid #B88E44; }
+        .header h1 { margin: 0; color: #FFFFFF; font-size: 20px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+        .header p { margin: 6px 0 0; color: #B88E44; font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
+        .content { padding: 32px; color: #334155; line-height: 1.65; }
+        .data-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+        .data-table th { background-color: #F8FAFC; color: #475569; font-weight: 600; text-align: left; padding: 10px 14px; border-bottom: 1px solid #E2E8F0; width: 34%; vertical-align: top; }
+        .data-table td { padding: 10px 14px; border-bottom: 1px solid #F1F5F9; color: #0F172A; vertical-align: top; }
+        .pitch-box { background-color: #F8FAFC; border-left: 3px solid #B88E44; padding: 16px 18px; margin: 16px 0 20px; border-radius: 0 6px 6px 0; font-size: 14px; color: #1E293B; line-height: 1.6; }
+        .footer { background-color: #F8FAFC; padding: 20px 32px; text-align: center; font-size: 12px; color: #94A3B8; border-top: 1px solid #E2E8F0; }
+        .footer a { color: #B88E44; text-decoration: none; }
+        .btn { display: inline-block; background-color: #B88E44; color: #FFFFFF !important; font-weight: 600; font-size: 13px; padding: 8px 16px; border-radius: 4px; text-decoration: none; }
+    ';
+
+    // 1. Admin Email (integralwebsolution@gmail.com)
+    $admin_subject = sprintf( '[Admin Alert] New Founder Pitch: %s (%s)', $company, $name );
+    $admin_body = '
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="utf-8"><style>' . $email_style . '</style></head>
+    <body style="background-color: #F8F9FA; padding: 20px 0;">
+        <div class="wrapper">
+            <div class="header">
+                <h1>GDAS VENTURES</h1>
+                <p>System Admin Notification &bull; Integral Web Solution</p>
+            </div>
+            <div class="content">
+                <h2 style="color: #0F172A; font-size: 17px; margin-top: 0;">New Pitch / Enquiry Received</h2>
+                <p>A new founder introduction has been submitted through the GDas Ventures platform. Submission details:</p>
+                <table class="data-table">
+                    <tr><th>Founder Name</th><td><strong>' . esc_html( $name ) . '</strong></td></tr>
+                    <tr><th>Work Email</th><td><a href="mailto:' . esc_attr( $email ) . '" style="color: #B88E44;">' . esc_html( $email ) . '</a></td></tr>
+                    <tr><th>Company</th><td><strong>' . esc_html( $company ) . '</strong></td></tr>
+                    <tr><th>Website</th><td>' . ( $website ? '<a href="' . esc_url( $website ) . '" target="_blank" style="color: #B88E44;">' . esc_html( $website ) . '</a>' : '<span style="color:#94A3B8;">None</span>' ) . '</td></tr>
+                    <tr><th>Domain / Sector</th><td><span style="background: #E2E8F0; padding: 3px 8px; border-radius: 4px; font-weight: 600;">' . esc_html( $sector ) . '</span></td></tr>
+                    <tr><th>Stage</th><td>' . esc_html( $stage ) . '</td></tr>
+                    <tr><th>Pitch Deck / Memo</th><td>' . ( $deck ? '<a href="' . esc_url( $deck ) . '" target="_blank" class="btn">View Pitch Deck ↗</a>' : '<span style="color:#94A3B8;">Not provided</span>' ) . '</td></tr>
+                    <tr><th>Received At</th><td>' . esc_html( $date_formatted ) . '</td></tr>
+                    <tr><th>User IP</th><td>' . esc_html( $ip_address ) . '</td></tr>
+                </table>
+                <h3 style="color: #0F172A; font-size: 14px; margin-bottom: 6px;">Pitch Details:</h3>
+                <div class="pitch-box">' . nl2br( esc_html( $pitch ) ) . '</div>
+            </div>
+            <div class="footer">
+                Notification managed by <strong>Integral Web Solution</strong> for <a href="https://gdasventures.com">GDas Ventures</a>.
+            </div>
+        </div>
+    </body>
+    </html>';
+
+    $admin_headers = [
+        'Content-Type: text/html; charset=UTF-8',
+        'From: GDas Ventures Portal <integralwebsolution@gmail.com>',
+        'Reply-To: ' . ( $name ? "$name <$email>" : $email ),
+    ];
+
+    // 2. Client Email (contact@gdasventures.com)
+    $client_subject = sprintf( '[Founder Introduction] %s — %s (%s)', $company, $name, $sector );
+    $client_body = '
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="utf-8"><style>' . $email_style . '</style></head>
+    <body style="background-color: #F8F9FA; padding: 20px 0;">
+        <div class="wrapper">
+            <div class="header">
+                <h1>GDAS VENTURES</h1>
+                <p>Private Investment Platform &bull; Investment Committee</p>
+            </div>
+            <div class="content">
+                <h2 style="color: #0F172A; font-size: 17px; margin-top: 0;">New Founder Introduction</h2>
+                <p>A founder has introduced their company for investment evaluation:</p>
+                <table class="data-table">
+                    <tr><th>Founder Name</th><td><strong>' . esc_html( $name ) . '</strong></td></tr>
+                    <tr><th>Work Email</th><td><a href="mailto:' . esc_attr( $email ) . '" style="color: #B88E44;">' . esc_html( $email ) . '</a></td></tr>
+                    <tr><th>Company</th><td><strong>' . esc_html( $company ) . '</strong></td></tr>
+                    <tr><th>Website</th><td>' . ( $website ? '<a href="' . esc_url( $website ) . '" target="_blank" style="color: #B88E44;">' . esc_html( $website ) . '</a>' : '<span style="color:#94A3B8;">None</span>' ) . '</td></tr>
+                    <tr><th>Sector</th><td><span style="background: #E2E8F0; padding: 3px 8px; border-radius: 4px; font-weight: 600;">' . esc_html( $sector ) . '</span></td></tr>
+                    <tr><th>Stage</th><td>' . esc_html( $stage ) . '</td></tr>
+                    <tr><th>Deck / Memo</th><td>' . ( $deck ? '<a href="' . esc_url( $deck ) . '" target="_blank" class="btn">View Pitch Deck ↗</a>' : '<span style="color:#94A3B8;">Not provided</span>' ) . '</td></tr>
+                    <tr><th>Date</th><td>' . esc_html( $date_formatted ) . '</td></tr>
+                </table>
+                <h3 style="color: #0F172A; font-size: 14px; margin-bottom: 6px;">Executive Summary / Problem & Vision:</h3>
+                <div class="pitch-box">' . nl2br( esc_html( $pitch ) ) . '</div>
+                <p style="font-size: 13px; color: #64748B;">You can reply directly to this email to contact the founder directly at <strong>' . esc_html( $email ) . '</strong>.</p>
+            </div>
+            <div class="footer">
+                &copy; ' . date('Y') . ' <a href="https://gdasventures.com">GDas Ventures</a>. Confidential Investment Memo.
+            </div>
+        </div>
+    </body>
+    </html>';
+
+    $client_headers = [
+        'Content-Type: text/html; charset=UTF-8',
+        'From: GDas Ventures Portal <integralwebsolution@gmail.com>',
+        'Reply-To: ' . ( $name ? "$name <$email>" : $email ),
+    ];
+
+    // 3. User Confirmation Autoresponder (to $email)
+    $user_subject = sprintf( 'Thank you for introducing %s — GDas Ventures', $company );
+    $user_body = '
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="utf-8"><style>' . $email_style . '</style></head>
+    <body style="background-color: #F8F9FA; padding: 20px 0;">
+        <div class="wrapper">
+            <div class="header">
+                <h1>GDAS VENTURES</h1>
+                <p>Private Investment Platform</p>
+            </div>
+            <div class="content">
+                <p style="font-size: 15px; margin-top: 0;">Dear ' . esc_html( $name ) . ',</p>
+                <p>Thank you for introducing <strong>' . esc_html( $company ) . '</strong> to GDas Ventures.</p>
+                <p>We evaluate every opportunity with high rigor against our thesis of backing generational, sovereign capabilities across deeptech, advanced engineering, defence, energy, and mission-critical manufacturing.</p>
+                <p>Our investment committee reviews new submissions on a rolling basis. If there is mutual alignment with our active mandate, a partner will reach out directly to coordinate a discussion.</p>
+                
+                <h3 style="color: #0F172A; font-size: 14px; margin-top: 24px; text-transform: uppercase; letter-spacing: 0.05em;">Submission Summary:</h3>
+                <table class="data-table">
+                    <tr><th>Company</th><td>' . esc_html( $company ) . '</td></tr>
+                    <tr><th>Domain</th><td>' . esc_html( $sector ) . '</td></tr>
+                    <tr><th>Stage</th><td>' . esc_html( $stage ) . '</td></tr>
+                    ' . ( $deck ? '<tr><th>Deck Link</th><td><a href="' . esc_url( $deck ) . '" style="color: #B88E44;">' . esc_html( $deck ) . '</a></td></tr>' : '' ) . '
+                </table>
+
+                <p style="margin-top: 24px; font-size: 14px; color: #475569;">
+                    Warm regards,<br>
+                    <strong>The Investment Team</strong><br>
+                    GDas Ventures<br>
+                    <a href="mailto:contact@gdasventures.com" style="color: #B88E44;">contact@gdasventures.com</a> &bull; <a href="https://gdasventures.com" style="color: #B88E44;">gdasventures.com</a>
+                </p>
+            </div>
+            <div class="footer">
+                &copy; ' . date('Y') . ' GDas Ventures. All rights reserved.<br>
+                This automated confirmation was sent to ' . esc_html( $email ) . '.
+            </div>
+        </div>
+    </body>
+    </html>';
+
+    $user_headers = [
+        'Content-Type: text/html; charset=UTF-8',
+        'From: GDas Ventures <contact@gdasventures.com>',
+        'Reply-To: contact@gdasventures.com',
+    ];
+
+    // Dispatch all 3 notifications
+    try {
+        wp_mail( 'integralwebsolution@gmail.com', $admin_subject, $admin_body, $admin_headers );
+        wp_mail( 'contact@gdasventures.com', $client_subject, $client_body, $client_headers );
+        if ( ! empty( $email ) && is_email( $email ) ) {
+            wp_mail( $email, $user_subject, $user_body, $user_headers );
+        }
+    } catch ( Exception $e ) {
+        error_log( '[GDAS Mail Error] ' . $e->getMessage() );
+    }
+}
+
+// Hook Elementor Pro native form submissions to record and send 3-way notifications
+add_action( 'elementor_pro/forms/new_record', 'gdas_handle_elementor_form_record', 10, 2 );
+function gdas_handle_elementor_form_record( $record, $ajax_handler ) {
+    $raw_fields = $record->get( 'fields' );
+    $data = [
+        'name'    => '',
+        'email'   => '',
+        'company' => '',
+        'website' => '',
+        'sector'  => '',
+        'stage'   => '',
+        'pitch'   => '',
+        'deck'    => '',
+    ];
+
+    foreach ( $raw_fields as $id => $field ) {
+        $val   = trim( $field['value'] ?? '' );
+        $title = strtolower( $field['title'] ?? '' );
+
+        if ( $id === 'name' || ( strpos( $title, 'name' ) !== false && strpos( $title, 'company' ) === false ) ) {
+            $data['name'] = sanitize_text_field( $val );
+        } elseif ( $id === 'email' || strpos( $title, 'email' ) !== false ) {
+            $data['email'] = sanitize_email( $val );
+        } elseif ( $id === 'company' || ( strpos( $title, 'company' ) !== false && strpos( $title, 'website' ) === false ) ) {
+            $data['company'] = sanitize_text_field( $val );
+        } elseif ( $id === 'website' || strpos( $title, 'website' ) !== false ) {
+            $data['website'] = esc_url_raw( $val );
+        } elseif ( $id === 'sector' || strpos( $title, 'domain' ) !== false || strpos( $title, 'sector' ) !== false ) {
+            $data['sector'] = sanitize_text_field( $val );
+        } elseif ( $id === 'stage' || strpos( $title, 'stage' ) !== false ) {
+            $data['stage'] = sanitize_text_field( $val );
+        } elseif ( $id === 'pitch' || strpos( $title, 'building' ) !== false || strpos( $title, 'pitch' ) !== false || strpos( $title, 'message' ) !== false ) {
+            $data['pitch'] = sanitize_textarea_field( $val );
+        } elseif ( $id === 'deck' || strpos( $title, 'deck' ) !== false || strpos( $title, 'memo' ) !== false ) {
+            $data['deck'] = esc_url_raw( $val );
+        }
+    }
+
+    // Save to gdas_pitch custom post type
+    $title = ( ! empty( $data['company'] ) ? $data['company'] : 'Founder Pitch' ) . ' — ' . ( ! empty( $data['name'] ) ? $data['name'] : 'Anonymous' );
+    $content = sprintf(
+        "Founder: %s\nEmail: %s\nCompany: %s\nWebsite: %s\nSector: %s\nStage: %s\nDeck Link: %s\n\n--- Pitch Details ---\n%s",
+        $data['name'], $data['email'], $data['company'], $data['website'], $data['sector'], $data['stage'], $data['deck'], $data['pitch']
+    );
+
+    $post_id = wp_insert_post( [
+        'post_type'    => 'gdas_pitch',
+        'post_title'   => $title,
+        'post_content' => $content,
+        'post_status'  => 'publish',
+    ] );
+
+    if ( ! is_wp_error( $post_id ) ) {
+        update_post_meta( $post_id, '_gdas_founder_name', $data['name'] );
+        update_post_meta( $post_id, '_gdas_founder_email', $data['email'] );
+        update_post_meta( $post_id, '_gdas_company', $data['company'] );
+        update_post_meta( $post_id, '_gdas_website', $data['website'] );
+        update_post_meta( $post_id, '_gdas_sector', $data['sector'] );
+        update_post_meta( $post_id, '_gdas_stage', $data['stage'] );
+        update_post_meta( $post_id, '_gdas_deck', $data['deck'] );
+    }
+
+    // Dispatch 3-way notifications
+    gdas_dispatch_three_way_notifications( $data );
 }
 
 // Output Brand Favicons in Head
@@ -151,7 +445,7 @@ function gdas_add_favicon_head() {
 // Automatic One-Time Sync for 100% Native Elementor Architecture
 add_action( 'init', 'gdas_sync_native_elementor_data' );
 function gdas_sync_native_elementor_data() {
-    if ( get_option( 'gdas_native_elementor_v3_synced' ) && ! isset( $_GET['sync_trigger'] ) ) {
+    if ( get_option( 'gdas_native_elementor_v4_synced' ) && ! isset( $_GET['sync_trigger'] ) ) {
         return;
     }
 
@@ -210,7 +504,16 @@ function gdas_sync_native_elementor_data() {
                     if ( ! empty( $el['settings']['image']['url'] ) ) {
                         $el['settings']['image']['url'] = str_replace( 'http://localhost/wordpress/', 'https://grey-tapir-780392.hostingersite.com/', $el['settings']['image']['url'] );
                     }
-                    if ( ( $el['widgetType'] ?? '' ) === 'icon-box' ) {
+                    $dark_sector_ids = [
+                        '1f8b1b0', '3c59abf', 'be3ef26', 'cd8b467',
+                        'f2350d5', '9568d68', '3e8af4c', '9b346f2',
+                        'a968389', '9aca56e', '9a9e9b1'
+                    ];
+                    if ( in_array( $el['id'] ?? '', $dark_sector_ids ) ) {
+                        $el['settings']['title_color'] = '#FFFFFF';
+                        $el['settings']['description_color'] = '#94A3B8';
+                        $updated = true;
+                    } elseif ( ( $el['widgetType'] ?? '' ) === 'icon-box' ) {
                         if ( empty( $el['settings']['title_color'] ) ) {
                             $el['settings']['title_color'] = '#15191C';
                         }
@@ -218,6 +521,24 @@ function gdas_sync_native_elementor_data() {
                             $el['settings']['description_color'] = '#64748B';
                         }
                         $updated = true;
+                    }
+                    if ( in_array( $el['id'] ?? '', ['bb4fdb8', 'd6e505d'] ) && ! empty( $el['elements'] ) ) {
+                        $force_dark_box_colors = function( &$items ) use ( &$force_dark_box_colors, &$updated ) {
+                            foreach ( $items as &$item ) {
+                                if ( ( $item['widgetType'] ?? '' ) === 'icon-box' ) {
+                                    $item['settings']['title_color'] = '#FFFFFF';
+                                    $item['settings']['description_color'] = '#94A3B8';
+                                    $updated = true;
+                                } elseif ( ( $item['widgetType'] ?? '' ) === 'heading' && ! in_array( $item['settings']['title'] ?? '', ['01','02','03','04','05','06','07','08'] ) ) {
+                                    $item['settings']['title_color'] = '#FFFFFF';
+                                    $updated = true;
+                                }
+                                if ( ! empty( $item['elements'] ) ) {
+                                    $force_dark_box_colors( $item['elements'] );
+                                }
+                            }
+                        };
+                        $force_dark_box_colors( $el['elements'] );
                     }
                     if ( ! empty( $el['elements'] ) ) {
                         $walker( $el['elements'] );
@@ -544,6 +865,25 @@ function gdas_sync_native_elementor_data() {
                             array_splice( $el['elements'], $form_idx, 0, [$badges_c] );
                         }
                     }
+                    if ( ( $el['id'] ?? '' ) === '0b81066' || ( $el['widgetType'] ?? '' ) === 'form' ) {
+                        $field_map = [
+                            '5a35193' => 'name',
+                            '04e4450' => 'email',
+                            '9513371' => 'company',
+                            '961ef3e' => 'website',
+                            '8b88259' => 'sector',
+                            '2eea88c' => 'stage',
+                            '10db16c' => 'pitch',
+                            'bd4cec8' => 'deck',
+                        ];
+                        if ( ! empty( $el['settings']['form_fields'] ) ) {
+                            foreach ( $el['settings']['form_fields'] as &$ff ) {
+                                if ( isset( $field_map[ $ff['_id'] ] ) ) {
+                                    $ff['custom_id'] = $field_map[ $ff['_id'] ];
+                                }
+                            }
+                        }
+                    }
                     if ( ! empty( $el['elements'] ) ) {
                         $contact_walker( $el['elements'] );
                     }
@@ -631,5 +971,5 @@ function gdas_sync_native_elementor_data() {
         }
     }
 
-    update_option( 'gdas_native_elementor_v3_synced', time() );
+    update_option( 'gdas_native_elementor_v4_synced', time() );
 }

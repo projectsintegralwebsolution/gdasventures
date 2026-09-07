@@ -1838,8 +1838,20 @@ p {
 }
 
 .gdas-footer-copyright-text {
-  white-space: nowrap;
   font-weight: 500;
+  line-height: 1.5;
+}
+
+.gdas-footer-copyright-text a.gdas-dev-credit {
+  color: #B88E44;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.gdas-footer-copyright-text a.gdas-dev-credit:hover {
+  color: #FFFFFF;
+  text-decoration: underline;
 }
 
 @media (max-width: 1024px) {
@@ -2721,6 +2733,52 @@ body, button, input, select, textarea,
   font-weight: 700 !important;
   letter-spacing: -0.015em !important;
   line-height: 1.35 !important;
+}
+
+/* 4a. Dark Sector Grid Boxes (Home Page - Sector Agnostic / Thesis Driven) */
+.elementor-element-bb4fdb8 .elementor-icon-box-title,
+.elementor-element-bb4fdb8 .elementor-icon-box-title span,
+.elementor-element-bb4fdb8 h4.elementor-icon-box-title,
+.elementor-element-bb4fdb8 h4.elementor-icon-box-title span,
+.elementor-element-d6e505d .elementor-heading-title,
+.elementor-element-d6e505d h4.elementor-heading-title,
+.elementor-element-1f8b1b0 .elementor-icon-box-title,
+.elementor-element-1f8b1b0 .elementor-icon-box-title span,
+.elementor-element-3c59abf .elementor-icon-box-title,
+.elementor-element-3c59abf .elementor-icon-box-title span,
+.elementor-element-be3ef26 .elementor-icon-box-title,
+.elementor-element-be3ef26 .elementor-icon-box-title span,
+.elementor-element-cd8b467 .elementor-icon-box-title,
+.elementor-element-cd8b467 .elementor-icon-box-title span,
+.elementor-element-f2350d5 .elementor-icon-box-title,
+.elementor-element-f2350d5 .elementor-icon-box-title span,
+.elementor-element-9568d68 .elementor-icon-box-title,
+.elementor-element-9568d68 .elementor-icon-box-title span,
+.elementor-element-3e8af4c .elementor-icon-box-title,
+.elementor-element-3e8af4c .elementor-icon-box-title span,
+.elementor-element-9b346f2 .elementor-icon-box-title,
+.elementor-element-9b346f2 .elementor-icon-box-title span,
+.elementor-element-a968389 .elementor-heading-title,
+.elementor-element-9aca56e .elementor-heading-title {
+  color: #FFFFFF !important;
+}
+
+.elementor-element-bb4fdb8 .elementor-icon-box-description,
+.elementor-element-d6e505d .elementor-widget-text-editor p,
+.elementor-element-1f8b1b0 .elementor-icon-box-description,
+.elementor-element-3c59abf .elementor-icon-box-description,
+.elementor-element-be3ef26 .elementor-icon-box-description,
+.elementor-element-cd8b467 .elementor-icon-box-description,
+.elementor-element-f2350d5 .elementor-icon-box-description,
+.elementor-element-9568d68 .elementor-icon-box-description,
+.elementor-element-3e8af4c .elementor-icon-box-description,
+.elementor-element-9b346f2 .elementor-icon-box-description {
+  color: #94A3B8 !important;
+}
+
+.elementor-element-bb4fdb8 h6.elementor-heading-title,
+.elementor-element-d6e505d h6.elementor-heading-title {
+  color: #B88E44 !important;
 }
 
 .elementor-widget-heading .elementor-heading-title {
