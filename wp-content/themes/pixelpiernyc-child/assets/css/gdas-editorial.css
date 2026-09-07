@@ -2055,52 +2055,52 @@ p {
 }
 
 .elementor-widget-slides .elementor-slides .elementor-slide-heading {
-  font-family: var(--gdas-font) !important;
-  font-size: clamp(2.4rem, 4.6vw, 3.8rem) !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.03em !important;
-  line-height: 1.12 !important;
-  color: #FFFFFF !important;
-  text-align: center !important;
-  width: 100% !important;
-  margin: 0 auto 1.25rem auto !important;
+  font-family: var(--gdas-font);
+  font-size: clamp(2.4rem, 4.6vw, 3.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  color: #FFFFFF;
+  text-align: center;
+  width: 100%;
+  margin: 0 auto 1.25rem auto;
 }
 
 .elementor-widget-slides .elementor-slides .elementor-slide-description {
-  font-family: var(--gdas-font) !important;
-  font-size: clamp(1.05rem, 1.5vw, 1.25rem) !important;
-  line-height: 1.65 !important;
-  color: #CBD5E1 !important;
-  text-align: center !important;
-  width: 100% !important;
-  max-width: 760px !important;
-  margin: 0 auto 2.25rem auto !important;
+  font-family: var(--gdas-font);
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  line-height: 1.65;
+  color: #CBD5E1;
+  text-align: center;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto 2.25rem auto;
 }
 
 .elementor-widget-slides .elementor-slides .elementor-slide-button {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.75rem !important;
-  font-family: var(--gdas-font) !important;
-  font-size: 0.96rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.02em !important;
-  border-radius: var(--gdas-radius-pill) !important;
-  padding: 0.9rem 2.2rem !important;
-  background-color: var(--gdas-gold) !important;
-  color: #FFFFFF !important;
-  border: 1px solid var(--gdas-gold) !important;
-  box-shadow: 0 8px 25px rgba(184, 142, 68, 0.35) !important;
-  margin: 0 auto !important;
-  align-self: center !important;
-  transition: all 0.25s ease !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-family: var(--gdas-font);
+  font-size: 0.96rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: var(--gdas-radius-pill);
+  padding: 0.9rem 2.2rem;
+  background-color: var(--gdas-gold);
+  color: #FFFFFF;
+  border: 1px solid var(--gdas-gold);
+  box-shadow: 0 8px 25px rgba(184, 142, 68, 0.35);
+  margin: 0 auto;
+  align-self: center;
+  transition: all 0.25s ease;
 }
 
 .elementor-widget-slides .elementor-slides .elementor-slide-button:hover {
-  background-color: var(--gdas-gold-hover) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 12px 30px rgba(184, 142, 68, 0.5) !important;
+  background-color: var(--gdas-gold-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(184, 142, 68, 0.5);
 }
 
 /* Custom Icon Box Styling (SPG Leaders Look) */
@@ -2705,6 +2705,11 @@ body, button, input, select, textarea,
   font-weight: 700 !important;
   letter-spacing: -0.02em !important;
   line-height: 1.25 !important;
+}
+
+.elementor-element-287d573 .elementor-widget-heading h2,
+.elementor-element-287d573 h2.elementor-heading-title {
+  color: #15191C !important;
 }
 
 /* 4. Card Titles (H3 / H4) */

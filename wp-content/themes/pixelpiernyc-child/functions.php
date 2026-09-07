@@ -148,107 +148,428 @@ function gdas_add_favicon_head() {
     echo '<link rel="shortcut icon" href="' . esc_url( $uri . "favicon.ico?v=$v" ) . '">' . "\n";
 }
 
-// Enrich Inside Pages with SPG Leaders Iconography
-add_filter( 'the_content', 'gdas_enrich_inner_page_icons', 20 );
-function gdas_enrich_inner_page_icons( $content ) {
-    if ( is_admin() || is_front_page() || is_home() ) {
-        return $content;
+// Automatic One-Time Sync for 100% Native Elementor Architecture
+add_action( 'init', 'gdas_sync_native_elementor_data' );
+function gdas_sync_native_elementor_data() {
+    if ( get_option( 'gdas_native_elementor_v2_synced' ) ) {
+        return;
     }
 
-    // 1. Perspective Page: Conviction Framework 6 Cards
-    $perspective_icons = [
-        'Founders who know the problem inside out' => 'fa-user-gear',
-        'Something genuinely difficult to replicate' => 'fa-shield-halved',
-        'A real, urgent customer requirement' => 'fa-bullseye',
-        'Tangible evidence that the market cares' => 'fa-chart-line',
-        'Room to become meaningfully larger' => 'fa-arrows-to-circle',
-        'Thoughtful use of capital' => 'fa-scale-balanced',
-    ];
-    foreach ( $perspective_icons as $title => $icon ) {
-        if ( strpos( $content, $title ) !== false && strpos( $content, $icon ) === false ) {
-            $icon_badge = '<div class="gdas-framework-icon-wrap"><i class="fa-solid ' . esc_attr( $icon ) . '"></i></div>';
-            $content = preg_replace(
-                '/(<h[34][^>]*>\s*' . preg_quote( $title, '/' ) . ')/is',
-                $icon_badge . '$1',
-                $content,
-                1
-            );
+    // 1. Home Page
+    $home_id = get_option( 'page_on_front' );
+    if ( $home_id ) {
+        $home_raw = get_post_meta( $home_id, '_elementor_data', true );
+        $home_data = json_decode( $home_raw, true );
+        if ( is_array( $home_data ) ) {
+            $updated = false;
+            $walker = function( &$elements ) use ( &$walker, &$updated ) {
+                foreach ( $elements as &$el ) {
+                    if ( ( $el['id'] ?? '' ) === '2180f1a' ) {
+                        $el['settings']['title_color'] = '#15191C';
+                        $updated = true;
+                    }
+                    if ( ( $el['id'] ?? '' ) === '287d573' ) {
+                        $el['settings']['background_background'] = 'classic';
+                        $el['settings']['background_color'] = '#FFFFFF';
+                        $updated = true;
+                    }
+                    if ( ( $el['widgetType'] ?? '' ) === 'slides' && ! empty( $el['settings']['slides'] ) ) {
+                        foreach ( $el['settings']['slides'] as &$slide ) {
+                            if ( ! empty( $slide['background_image']['url'] ) ) {
+                                $slide['background_image']['url'] = str_replace( 'http://localhost/wordpress/', 'https://grey-tapir-780392.hostingersite.com/', $slide['background_image']['url'] );
+                            }
+                            if ( ! empty( $slide['link']['url'] ) ) {
+                                $slide['link']['url'] = str_replace( '/wordpress/', '/', $slide['link']['url'] );
+                            }
+                        }
+                        $updated = true;
+                    }
+                    if ( ! empty( $el['settings']['image']['url'] ) ) {
+                        $el['settings']['image']['url'] = str_replace( 'http://localhost/wordpress/', 'https://grey-tapir-780392.hostingersite.com/', $el['settings']['image']['url'] );
+                    }
+                    if ( ! empty( $el['elements'] ) ) {
+                        $walker( $el['elements'] );
+                    }
+                }
+            };
+            $walker( $home_data );
+            if ( $updated ) {
+                update_post_meta( $home_id, '_elementor_data', wp_slash( json_encode( $home_data ) ) );
+            }
         }
     }
 
-    // 3. Contact Page: Email, Platform, LinkedIn, and Assurance Badges
-    if ( strpos( $content, 'contact@gdasventures.com' ) !== false && strpos( $content, 'fa-envelope' ) === false ) {
-        $content = preg_replace(
-            '/<h4[^>]*>\s*contact@gdasventures\.com\s*<\/h4>/is',
-            '<div class="gdas-contact-item-row"><div class="gdas-contact-icon-bubble"><i class="fa-solid fa-envelope"></i></div><div class="gdas-contact-info-block"><span class="gdas-contact-sublbl">DIRECT INQUIRIES</span><a href="mailto:contact@gdasventures.com" class="gdas-contact-link">contact@gdasventures.com</a></div></div>',
-            $content,
-            1
-        );
-    }
-    if ( strpos( $content, 'Private Investment Platform · India' ) !== false && strpos( $content, 'fa-landmark' ) === false ) {
-        $content = preg_replace(
-            '/<p[^>]*>\s*Private Investment Platform · India\s*<\/p>/is',
-            '<div class="gdas-contact-item-row"><div class="gdas-contact-icon-bubble"><i class="fa-solid fa-landmark"></i></div><div class="gdas-contact-info-block"><span class="gdas-contact-sublbl">PLATFORM MODEL</span><span class="gdas-contact-val">Private Investment Platform · India</span></div></div>',
-            $content,
-            1
-        );
-    }
-    if ( strpos( $content, 'LinkedIn Profile ↗' ) !== false && strpos( $content, 'fa-linkedin' ) === false ) {
-        $content = preg_replace(
-            '/<span class="elementor-button-text">LinkedIn Profile ↗<\/span>/is',
-            '<span class="elementor-button-text"><i class="fa-brands fa-linkedin" style="margin-right: 0.5rem;"></i> LinkedIn Profile ↗</span>',
-            $content,
-            1
-        );
-    }
-    if ( strpos( $content, 'Introduce Your Company' ) !== false && strpos( $content, 'gdas-founder-guarantees-grid' ) === false ) {
-        $guarantees = '<div class="gdas-founder-guarantees-grid">
-            <div class="gdas-guarantee-card"><i class="fa-solid fa-user-shield"></i><span>Direct Partner Review</span></div>
-            <div class="gdas-guarantee-card"><i class="fa-solid fa-lock"></i><span>Strict Confidentiality</span></div>
-            <div class="gdas-guarantee-card"><i class="fa-solid fa-bolt"></i><span>Rapid Response</span></div>
-        </div>';
-        $content = preg_replace(
-            '/(<\/div>\s*<\/div>\s*<\/div>\s*<div[^>]*data-id="29d9cf4")/is',
-            $guarantees . '$1',
-            $content,
-            1
-        );
+    // 2. About Page (What Guides Our Capital)
+    $about_page = get_page_by_path( 'about' );
+    if ( $about_page ) {
+        $about_id = $about_page->ID;
+        $about_data = json_decode( get_post_meta( $about_id, '_elementor_data', true ), true );
+        if ( is_array( $about_data ) ) {
+            $has_pillars = false;
+            foreach ( $about_data as $el ) {
+                if ( ( $el['id'] ?? '' ) === 'gdas_about_pillars' ) {
+                    $has_pillars = true;
+                    break;
+                }
+            }
+            if ( ! $has_pillars ) {
+                $pillars_con = [
+                    'id' => 'gdas_about_pillars',
+                    'elType' => 'container',
+                    'settings' => [
+                        'content_width' => 'boxed',
+                        'boxed_width' => ['unit' => 'px', 'size' => 1260],
+                        'padding' => ['unit' => 'px', 'top' => '90', 'right' => '24', 'bottom' => '90', 'left' => '24', 'isLinked' => false],
+                        'background_background' => 'classic',
+                        'background_color' => '#FCFBF7',
+                        '_element_id' => 'operating-principles'
+                    ],
+                    'elements' => [
+                        [
+                            'id' => 'pillar_eyebrow',
+                            'elType' => 'widget',
+                            'widgetType' => 'heading',
+                            'settings' => [
+                                'title' => 'OUR OPERATING PRINCIPLES',
+                                'header_size' => 'h6',
+                                'align' => 'center',
+                                'title_color' => '#B88E44',
+                                'typography_typography' => 'custom',
+                                'typography_font_size' => ['unit' => 'px', 'size' => 13],
+                                'typography_font_weight' => '700',
+                                'typography_letter_spacing' => ['unit' => 'px', 'size' => 1.5]
+                            ]
+                        ],
+                        [
+                            'id' => 'pillar_title',
+                            'elType' => 'widget',
+                            'widgetType' => 'heading',
+                            'settings' => [
+                                'title' => 'What Guides Our Capital',
+                                'header_size' => 'h2',
+                                'align' => 'center',
+                                'title_color' => '#15191C',
+                                'typography_typography' => 'custom',
+                                'typography_font_size' => ['unit' => 'px', 'size' => 38],
+                                'typography_font_weight' => '700'
+                            ]
+                        ],
+                        [
+                            'id' => 'pillar_desc',
+                            'elType' => 'widget',
+                            'widgetType' => 'text-editor',
+                            'settings' => [
+                                'editor' => '<p style="text-align: center; max-width: 720px; margin: 0 auto 3rem auto; color: #475569; font-size: 1.12rem; line-height: 1.65;">We underwrite foundational enterprises with a disciplined, patient, and founder-aligned mandate.</p>',
+                                'align' => 'center'
+                            ]
+                        ],
+                        [
+                            'id' => 'pillar_cards_grid',
+                            'elType' => 'container',
+                            'settings' => [
+                                'content_width' => 'full',
+                                'flex_direction' => 'row',
+                                'flex_wrap' => 'wrap',
+                                'flex_justify_content' => 'space-between',
+                                'flex_gap' => ['unit' => 'px', 'size' => 24]
+                            ],
+                            'elements' => [
+                                [
+                                    'id' => 'pillar_c1',
+                                    'elType' => 'container',
+                                    'settings' => [
+                                        'content_width' => 'full',
+                                        'width' => ['unit' => '%', 'size' => 23],
+                                        'width_tablet' => ['unit' => '%', 'size' => 48],
+                                        'width_mobile' => ['unit' => '%', 'size' => 100],
+                                        'background_background' => 'classic',
+                                        'background_color' => '#FFFFFF',
+                                        'border_border' => 'solid',
+                                        'border_width' => ['unit' => 'px', 'top' => '1', 'right' => '1', 'bottom' => '1', 'left' => '1'],
+                                        'border_color' => 'rgba(21, 25, 28, 0.08)',
+                                        'border_radius' => ['unit' => 'px', 'top' => '16', 'right' => '16', 'bottom' => '16', 'left' => '16'],
+                                        'padding' => ['unit' => 'px', 'top' => '32', 'right' => '24', 'bottom' => '32', 'left' => '24']
+                                    ],
+                                    'elements' => [
+                                        [
+                                            'id' => 'pillar_box_1',
+                                            'elType' => 'widget',
+                                            'widgetType' => 'icon-box',
+                                            'settings' => [
+                                                'selected_icon' => ['value' => 'fas fa-hourglass-half', 'library' => 'fa-solid'],
+                                                'title_text' => 'Patient Horizon',
+                                                'description_text' => 'We deploy proprietary, permanent capital with multi-decade holding periods, free from artificial fund exit constraints.',
+                                                'title_size' => 'h3',
+                                                'position' => 'top',
+                                                'view' => 'stacked',
+                                                'primary_color' => 'rgba(184, 142, 68, 0.12)',
+                                                'secondary_color' => '#B88E44'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'id' => 'pillar_c2',
+                                    'elType' => 'container',
+                                    'settings' => [
+                                        'content_width' => 'full',
+                                        'width' => ['unit' => '%', 'size' => 23],
+                                        'width_tablet' => ['unit' => '%', 'size' => 48],
+                                        'width_mobile' => ['unit' => '%', 'size' => 100],
+                                        'background_background' => 'classic',
+                                        'background_color' => '#FFFFFF',
+                                        'border_border' => 'solid',
+                                        'border_width' => ['unit' => 'px', 'top' => '1', 'right' => '1', 'bottom' => '1', 'left' => '1'],
+                                        'border_color' => 'rgba(21, 25, 28, 0.08)',
+                                        'border_radius' => ['unit' => 'px', 'top' => '16', 'right' => '16', 'bottom' => '16', 'left' => '16'],
+                                        'padding' => ['unit' => 'px', 'top' => '32', 'right' => '24', 'bottom' => '32', 'left' => '24']
+                                    ],
+                                    'elements' => [
+                                        [
+                                            'id' => 'pillar_box_2',
+                                            'elType' => 'widget',
+                                            'widgetType' => 'icon-box',
+                                            'settings' => [
+                                                'selected_icon' => ['value' => 'fas fa-shield-halved', 'library' => 'fa-solid'],
+                                                'title_text' => 'Sovereign Capability',
+                                                'description_text' => 'We prioritize enterprises that reinforce India’s industrial backbone—securing vital capabilities across aerospace, energy, and materials.',
+                                                'title_size' => 'h3',
+                                                'position' => 'top',
+                                                'view' => 'stacked',
+                                                'primary_color' => 'rgba(184, 142, 68, 0.12)',
+                                                'secondary_color' => '#B88E44'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'id' => 'pillar_c3',
+                                    'elType' => 'container',
+                                    'settings' => [
+                                        'content_width' => 'full',
+                                        'width' => ['unit' => '%', 'size' => 23],
+                                        'width_tablet' => ['unit' => '%', 'size' => 48],
+                                        'width_mobile' => ['unit' => '%', 'size' => 100],
+                                        'background_background' => 'classic',
+                                        'background_color' => '#FFFFFF',
+                                        'border_border' => 'solid',
+                                        'border_width' => ['unit' => 'px', 'top' => '1', 'right' => '1', 'bottom' => '1', 'left' => '1'],
+                                        'border_color' => 'rgba(21, 25, 28, 0.08)',
+                                        'border_radius' => ['unit' => 'px', 'top' => '16', 'right' => '16', 'bottom' => '16', 'left' => '16'],
+                                        'padding' => ['unit' => 'px', 'top' => '32', 'right' => '24', 'bottom' => '32', 'left' => '24']
+                                    ],
+                                    'elements' => [
+                                        [
+                                            'id' => 'pillar_box_3',
+                                            'elType' => 'widget',
+                                            'widgetType' => 'icon-box',
+                                            'settings' => [
+                                                'selected_icon' => ['value' => 'fas fa-microchip', 'library' => 'fa-solid'],
+                                                'title_text' => 'Hard Defensibility',
+                                                'description_text' => 'We favor physical and deep-tech moats: precision manufacturing, intellectual property, certifications, and operational expertise.',
+                                                'title_size' => 'h3',
+                                                'position' => 'top',
+                                                'view' => 'stacked',
+                                                'primary_color' => 'rgba(184, 142, 68, 0.12)',
+                                                'secondary_color' => '#B88E44'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'id' => 'pillar_c4',
+                                    'elType' => 'container',
+                                    'settings' => [
+                                        'content_width' => 'full',
+                                        'width' => ['unit' => '%', 'size' => 23],
+                                        'width_tablet' => ['unit' => '%', 'size' => 48],
+                                        'width_mobile' => ['unit' => '%', 'size' => 100],
+                                        'background_background' => 'classic',
+                                        'background_color' => '#FFFFFF',
+                                        'border_border' => 'solid',
+                                        'border_width' => ['unit' => 'px', 'top' => '1', 'right' => '1', 'bottom' => '1', 'left' => '1'],
+                                        'border_color' => 'rgba(21, 25, 28, 0.08)',
+                                        'border_radius' => ['unit' => 'px', 'top' => '16', 'right' => '16', 'bottom' => '16', 'left' => '16'],
+                                        'padding' => ['unit' => 'px', 'top' => '32', 'right' => '24', 'bottom' => '32', 'left' => '24']
+                                    ],
+                                    'elements' => [
+                                        [
+                                            'id' => 'pillar_box_4',
+                                            'elType' => 'widget',
+                                            'widgetType' => 'icon-box',
+                                            'settings' => [
+                                                'selected_icon' => ['value' => 'fas fa-handshake', 'library' => 'fa-solid'],
+                                                'title_text' => 'Founder Alignment',
+                                                'description_text' => 'We are partners, not backseat drivers. We respect the extraordinary burden of building and engage with clarity, directness, and speed.',
+                                                'title_size' => 'h3',
+                                                'position' => 'top',
+                                                'view' => 'stacked',
+                                                'primary_color' => 'rgba(184, 142, 68, 0.12)',
+                                                'secondary_color' => '#B88E44'
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ];
+                $about_data[] = $pillars_con;
+                update_post_meta( $about_id, '_elementor_data', wp_slash( json_encode( $about_data ) ) );
+            }
+        }
     }
 
-    // 4. About Page: Operating Principles Grid
-    if ( strpos( $content, 'ABOUT GDAS VENTURES' ) !== false && strpos( $content, 'gdas-about-pillars-section' ) === false ) {
-        $about_pillars = '
-        <section class="gdas-about-pillars-section">
-            <div class="gdas-container">
-                <div class="gdas-eyebrow">OUR OPERATING PRINCIPLES</div>
-                <h2 class="gdas-pillars-title">What Guides Our Capital</h2>
-                <p class="gdas-pillars-subhead">We underwrite foundational enterprises with a disciplined, patient, and founder-aligned mandate.</p>
-                <div class="gdas-pillars-grid">
-                    <div class="gdas-pillar-card">
-                        <div class="gdas-pillar-icon-box"><i class="fa-solid fa-hourglass-half"></i></div>
-                        <h3>Patient Horizon</h3>
-                        <p>We deploy proprietary, permanent capital with multi-decade holding periods, free from artificial fund exit constraints.</p>
-                    </div>
-                    <div class="gdas-pillar-card">
-                        <div class="gdas-pillar-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
-                        <h3>Sovereign Capability</h3>
-                        <p>We prioritize enterprises that reinforce India’s industrial backbone—securing vital capabilities across aerospace, energy, and materials.</p>
-                    </div>
-                    <div class="gdas-pillar-card">
-                        <div class="gdas-pillar-icon-box"><i class="fa-solid fa-microchip"></i></div>
-                        <h3>Hard Defensibility</h3>
-                        <p>We favor physical and deep-tech moats: precision manufacturing, intellectual property, certifications, and operational expertise.</p>
-                    </div>
-                    <div class="gdas-pillar-card">
-                        <div class="gdas-pillar-icon-box"><i class="fa-solid fa-handshake"></i></div>
-                        <h3>Founder Alignment</h3>
-                        <p>We are partners, not backseat drivers. We respect the extraordinary burden of building and engage with clarity, directness, and speed.</p>
-                    </div>
-                </div>
-            </div>
-        </section>';
-        $content .= $about_pillars;
+    // 3. Contact Page (Assurance Badges)
+    $contact_page = get_page_by_path( 'contact' );
+    if ( $contact_page ) {
+        $contact_id = $contact_page->ID;
+        $contact_data = json_decode( get_post_meta( $contact_id, '_elementor_data', true ), true );
+        if ( is_array( $contact_data ) ) {
+            $contact_walker = function( &$elements ) use ( &$contact_walker ) {
+                foreach ( $elements as &$el ) {
+                    if ( ( $el['id'] ?? '' ) === '29d9cf4' ) {
+                        $has_b = false;
+                        foreach ( $el['elements'] as $sub ) {
+                            if ( ( $sub['id'] ?? '' ) === 'gdas_contact_guarantees' ) {
+                                $has_b = true;
+                                break;
+                            }
+                        }
+                        if ( ! $has_b ) {
+                            $badges_c = [
+                                'id' => 'gdas_contact_guarantees',
+                                'elType' => 'container',
+                                'settings' => [
+                                    'content_width' => 'full',
+                                    'flex_direction' => 'row',
+                                    'flex_wrap' => 'nowrap',
+                                    'flex_justify_content' => 'space-between',
+                                    'flex_gap' => ['unit' => 'px', 'size' => 12],
+                                    'margin' => ['unit' => 'px', 'top' => '0', 'right' => '0', 'bottom' => '24', 'left' => '0']
+                                ],
+                                'elements' => [
+                                    [
+                                        'id' => 'guar_1',
+                                        'elType' => 'widget',
+                                        'widgetType' => 'icon-box',
+                                        'settings' => [
+                                            'selected_icon' => ['value' => 'fas fa-user-shield', 'library' => 'fa-solid'],
+                                            'title_text' => 'Direct Partner Review',
+                                            'title_size' => 'h6',
+                                            'position' => 'left',
+                                            'view' => 'default',
+                                            'primary_color' => '#B88E44'
+                                        ]
+                                    ],
+                                    [
+                                        'id' => 'guar_2',
+                                        'elType' => 'widget',
+                                        'widgetType' => 'icon-box',
+                                        'settings' => [
+                                            'selected_icon' => ['value' => 'fas fa-lock', 'library' => 'fa-solid'],
+                                            'title_text' => 'Strict Confidentiality',
+                                            'title_size' => 'h6',
+                                            'position' => 'left',
+                                            'view' => 'default',
+                                            'primary_color' => '#B88E44'
+                                        ]
+                                    ],
+                                    [
+                                        'id' => 'guar_3',
+                                        'elType' => 'widget',
+                                        'widgetType' => 'icon-box',
+                                        'settings' => [
+                                            'selected_icon' => ['value' => 'fas fa-bolt', 'library' => 'fa-solid'],
+                                            'title_text' => 'Rapid Response',
+                                            'title_size' => 'h6',
+                                            'position' => 'left',
+                                            'view' => 'default',
+                                            'primary_color' => '#B88E44'
+                                        ]
+                                    ]
+                                ]
+                            ];
+                            $form_idx = count( $el['elements'] ) - 1;
+                            array_splice( $el['elements'], $form_idx, 0, [$badges_c] );
+                        }
+                    }
+                    if ( ! empty( $el['elements'] ) ) {
+                        $contact_walker( $el['elements'] );
+                    }
+                }
+            };
+            $contact_walker( $contact_data );
+            update_post_meta( $contact_id, '_elementor_data', wp_slash( json_encode( $contact_data ) ) );
+        }
     }
 
-    return $content;
+    // 4. Perspective Page (Framework Cards)
+    $persp_page = get_page_by_path( 'our-perspective' );
+    if ( $persp_page ) {
+        $persp_id = $persp_page->ID;
+        $persp_data = json_decode( get_post_meta( $persp_id, '_elementor_data', true ), true );
+        if ( is_array( $persp_data ) ) {
+            $f_icons = [
+                'Founders who know the problem inside out' => 'fas fa-user-gear',
+                'Something genuinely difficult to replicate' => 'fas fa-shield-halved',
+                'A real, urgent customer requirement' => 'fas fa-bullseye',
+                'Tangible evidence that the market cares' => 'fas fa-chart-line',
+                'Room to become meaningfully larger' => 'fas fa-arrows-to-circle',
+                'Thoughtful use of capital' => 'fas fa-scale-balanced',
+            ];
+            $persp_walker = function( &$elements ) use ( &$persp_walker, $f_icons ) {
+                foreach ( $elements as &$el ) {
+                    if ( ! empty( $el['elements'] ) && count( $el['elements'] ) === 2 ) {
+                        $h_w = null;
+                        $t_w = null;
+                        foreach ( $el['elements'] as $sub ) {
+                            if ( ( $sub['widgetType'] ?? '' ) === 'heading' ) $h_w = $sub;
+                            if ( ( $sub['widgetType'] ?? '' ) === 'text-editor' ) $t_w = $sub;
+                        }
+                        if ( $h_w && $t_w ) {
+                            $title = trim( $h_w['settings']['title'] ?? '' );
+                            if ( isset( $f_icons[$title] ) ) {
+                                $icon = $f_icons[$title];
+                                $desc = strip_tags( $t_w['settings']['editor'] ?? '' );
+                                $ib = [
+                                    'id' => 'ib_' . substr( md5( $title ), 0, 7 ),
+                                    'elType' => 'widget',
+                                    'widgetType' => 'icon-box',
+                                    'settings' => [
+                                        'selected_icon' => ['value' => $icon, 'library' => 'fa-solid'],
+                                        'title_text' => $title,
+                                        'description_text' => $desc,
+                                        'title_size' => 'h4',
+                                        'position' => 'top',
+                                        'view' => 'stacked',
+                                        'primary_color' => 'rgba(184, 142, 68, 0.12)',
+                                        'secondary_color' => '#B88E44'
+                                    ]
+                                ];
+                                $el['elements'] = [$ib];
+                            }
+                        }
+                    }
+                    if ( ! empty( $el['elements'] ) ) {
+                        $persp_walker( $el['elements'] );
+                    }
+                }
+            };
+            $persp_walker( $persp_data );
+            update_post_meta( $persp_id, '_elementor_data', wp_slash( json_encode( $persp_data ) ) );
+        }
+    }
+
+    // Clean any residual localhost URLs in all postmeta
+    global $wpdb;
+    $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'http://localhost/wordpress/', 'https://grey-tapir-780392.hostingersite.com/') WHERE meta_key = '_elementor_data'" );
+    $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, '/wordpress/investments/', '/investments/') WHERE meta_key = '_elementor_data'" );
+
+    // Clear Elementor CSS cache
+    if ( class_exists( '\Elementor\Plugin' ) ) {
+        \Elementor\Plugin::$instance->files_manager->clear_cache();
+    }
+
+    update_option( 'gdas_native_elementor_v2_synced', time() );
 }

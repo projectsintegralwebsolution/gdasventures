@@ -253,6 +253,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // =========================================================
     // 7. SPG Leaders Scroll-Driven Text Reveal & Dimming Engine
     // =========================================================
+    // Check if Elementor Editor or Preview is active - do NOT interfere with builder
+    const isElementorEditor = document.body.classList.contains('elementor-editor-active') ||
+                              document.body.classList.contains('elementor-editor-preview') ||
+                              Boolean(window.elementorFrontend && window.elementorFrontend.isEditMode());
+
+    if (isElementorEditor) {
+        return; // Keep editor 100% clean, crisp, and native
+    }
+
     // A. Word-by-Word Continuous Text Reveal Scrub
     // Only target primary statement h2, strictly exclude eyebrows/h6
     const scrubHeadings = document.querySelectorAll(
@@ -384,40 +393,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial pass on load
     updateScrollInteractions();
     setTimeout(updateScrollInteractions, 300);
-
-    // 6. Inside Pages Luxury Iconography Fallback
-    function initInsidePageIcons() {
-        if (document.body.classList.contains('home')) return;
-
-        const perspectiveIcons = {
-            'Founders who know the problem inside out': 'fa-user-gear',
-            'Something genuinely difficult to replicate': 'fa-shield-halved',
-            'A real, urgent customer requirement': 'fa-bullseye',
-            'Tangible evidence that the market cares': 'fa-chart-line',
-            'Room to become meaningfully larger': 'fa-arrows-to-circle',
-            'Thoughtful use of capital': 'fa-scale-balanced'
-        };
-
-        document.querySelectorAll('h4, h3').forEach(h => {
-            const txt = h.textContent.trim();
-            if (perspectiveIcons[txt]) {
-                if (h.previousElementSibling && h.previousElementSibling.classList.contains('gdas-framework-icon-wrap')) return;
-                if (h.parentElement && h.parentElement.querySelector('.gdas-framework-icon-wrap')) return;
-
-                const iconDiv = document.createElement('div');
-                iconDiv.className = 'gdas-framework-icon-wrap';
-                iconDiv.innerHTML = `<i class="fa-solid ${perspectiveIcons[txt]}"></i>`;
-                h.parentNode.insertBefore(iconDiv, h);
-            }
-        });
-
-        document.querySelectorAll('a[href*="linkedin.com"]').forEach(a => {
-            const textSpan = a.querySelector('.elementor-button-text') || a;
-            if (textSpan && !textSpan.querySelector('.fa-linkedin')) {
-                textSpan.innerHTML = `<i class="fa-brands fa-linkedin" style="margin-right: 0.5rem;"></i> ` + textSpan.textContent.replace(/^[^\w]*/, '');
-            }
-        });
-    }
-    initInsidePageIcons();
-    setTimeout(initInsidePageIcons, 400);
 });
