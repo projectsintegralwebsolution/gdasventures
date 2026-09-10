@@ -245,28 +245,52 @@ p {
   object-fit: contain;
 }
 
+/* Directly Visible Desktop Navigation */
+.gdas-desktop-nav {
+  display: flex;
+  align-items: center;
+}
+
+.gdas-desktop-nav-list,
 .gdas-nav-list {
   display: flex;
   align-items: center;
   gap: 2.2rem;
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
+.gdas-desktop-nav-list li,
+.gdas-nav-item {
+  margin: 0;
+  padding: 0;
+}
+
+.gdas-desktop-nav-list a,
 .gdas-nav-item a {
-  font-size: 0.92rem;
+  font-family: var(--gdas-font);
+  font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
-  color: var(--gdas-text-secondary);
+  color: var(--gdas-navy);
   transition: color 0.2s ease;
   position: relative;
-  padding: 0.4rem 0;
+  padding: 0.45rem 0;
+  letter-spacing: -0.01em;
 }
 
-.gdas-nav-item a:hover,
+.gdas-desktop-nav-list a:hover,
+.gdas-nav-item a:hover {
+  color: var(--gdas-gold);
+}
+
+.gdas-desktop-nav-list li.active a,
 .gdas-nav-item.active a {
   color: var(--gdas-navy);
 }
 
+.gdas-desktop-nav-list li.active a::after,
 .gdas-nav-item.active a::after {
   content: "";
   position: absolute;
@@ -281,6 +305,24 @@ p {
   display: flex;
   align-items: center;
   gap: 1.25rem;
+}
+
+@media (min-width: 1025px) {
+  .gdas-desktop-nav {
+    display: flex !important;
+  }
+  .gdas-header-actions .gdas-burger-btn {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .gdas-desktop-nav {
+    display: none !important;
+  }
+  .gdas-header-actions .gdas-burger-btn {
+    display: inline-flex !important;
+  }
 }
 
 .gdas-mobile-toggle {
@@ -1722,8 +1764,8 @@ p {
 
 .gdas-footer-columns {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
-  gap: 3.5rem;
+  grid-template-columns: 1.6fr 1fr 1.2fr;
+  gap: 4rem;
   align-items: start;
   margin-bottom: 4rem;
 }
@@ -3172,3 +3214,109 @@ body, button, input, select, textarea,
   color: var(--gdas-text-secondary);
   margin: 0;
 }
+
+/* ==========================================================================
+   1. Complete Custom Cursor Eradication & Native Cursor Restoration
+   ========================================================================== */
+#mouseDot,
+.mouse-dot,
+#mouse-dot,
+.vamtam-cursor {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html,
+body,
+body.gdas-site-body,
+body.no-theme-cursor,
+* {
+  cursor: auto !important;
+}
+
+a,
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+.gdas-btn,
+.gdas-burger-btn,
+.gdas-accordion-header,
+.gdas-desktop-nav-list a,
+.gdas-footer-list a {
+  cursor: pointer !important;
+}
+
+/* ==========================================================================
+   2. Portfolio Company Logos & Presentation
+   ========================================================================== */
+.gdas-portfolio-logo-img,
+.elementor-widget-image .gdas-portfolio-logo-img,
+.gdas-portfolio-card-logo img {
+  max-height: 48px !important;
+  width: auto !important;
+  max-width: 200px !important;
+  object-fit: contain !important;
+  display: block !important;
+  margin: 0 0 1.5rem 0 !important;
+  background: transparent !important;
+}
+
+/* ==========================================================================
+   3. Homepage 4-Card Investment Focus Grid & Reflow
+   ========================================================================== */
+.elementor-element-d6e505d {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  justify-content: space-between !important;
+  gap: 1.5rem !important;
+}
+
+.elementor-element-d6e505d > .e-con,
+.elementor-element-d6e505d > .elementor-element {
+  flex: 1 1 calc(25% - 1.25rem) !important;
+  max-width: calc(25% - 1.25rem) !important;
+  min-height: 150px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.elementor-element-d6e505d > .e-con:hover,
+.elementor-element-d6e505d > .elementor-element:hover {
+  transform: translateY(-4px) !important;
+  border-color: rgba(184, 142, 68, 0.45) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35) !important;
+}
+
+@media (max-width: 1024px) {
+  .elementor-element-d6e505d > .e-con,
+  .elementor-element-d6e505d > .elementor-element {
+    flex: 1 1 calc(50% - 1rem) !important;
+    max-width: calc(50% - 1rem) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .elementor-element-d6e505d > .e-con,
+  .elementor-element-d6e505d > .elementor-element {
+    flex: 1 1 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* ==========================================================================
+   4. Centered Editorial Reading Containers (Perspective & About)
+   ========================================================================== */
+.gdas-editorial-centered,
+.gdas-about-centered {
+  max-width: 860px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: 100% !important;
+}
+

@@ -16,7 +16,7 @@
     <link rel="shortcut icon" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/favicon.ico?v=' . filemtime( get_stylesheet_directory() . '/assets/images/favicon.ico' ) ); ?>">
     <?php wp_head(); ?>
 </head>
-<body <?php body_class( 'gdas-site-body' ); ?>>
+<body <?php body_class( 'gdas-site-body no-theme-cursor' ); ?>>
 <?php wp_body_open(); ?>
 
 <!-- Sticky Navigation Bar -->
@@ -27,7 +27,28 @@
             <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/logo.png' ); ?>" alt="G Das Ventures" class="gdas-main-logo-img" width="320" height="72">
         </a>
 
-        <!-- Header Actions: Only Clean SPG Burger Menu Button -->
+        <!-- Directly Visible Desktop Navigation -->
+        <nav class="gdas-desktop-nav" aria-label="Main Navigation">
+            <ul class="gdas-desktop-nav-list">
+                <li class="<?php echo is_front_page() ? 'active' : ''; ?>">
+                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
+                </li>
+                <li class="<?php echo is_page( 'investments' ) ? 'active' : ''; ?>">
+                    <a href="<?php echo esc_url( home_url( '/investments/' ) ); ?>">Investments</a>
+                </li>
+                <li class="<?php echo is_page( 'our-perspective' ) ? 'active' : ''; ?>">
+                    <a href="<?php echo esc_url( home_url( '/our-perspective/' ) ); ?>">Our Perspective</a>
+                </li>
+                <li class="<?php echo is_page( 'about' ) ? 'active' : ''; ?>">
+                    <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Us</a>
+                </li>
+                <li class="<?php echo is_page( 'contact' ) ? 'active' : ''; ?>">
+                    <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Contact & Pitch</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Header Actions: Clean Burger Menu Button for Mobile & Tablet -->
         <div class="gdas-header-actions">
             <button class="gdas-burger-btn" id="gdas-burger-btn" aria-label="Open Navigation Menu" aria-expanded="false">
                 <span class="burger-bars">
@@ -135,10 +156,6 @@
                     <div class="flyout-contact-item">
                         <span class="lbl">Email</span>
                         <a href="mailto:contact@gdasventures.com">contact@gdasventures.com</a>
-                    </div>
-                    <div class="flyout-contact-item">
-                        <span class="lbl">Platform</span>
-                        <span>Private Investment Platform · India</span>
                     </div>
                     <div class="flyout-contact-item">
                         <span class="lbl">Professional Network</span>

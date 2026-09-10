@@ -2,6 +2,16 @@
  * G Das Ventures - Interactive Scripts
  */
 document.addEventListener('DOMContentLoaded', function() {
+    // 0. Eradicate custom mouse follower & restore native cursor
+    const removeCursor = () => {
+        const dots = document.querySelectorAll('#mouseDot, .mouse-dot, #mouse-dot, .vamtam-cursor');
+        dots.forEach(d => d.remove());
+    };
+    removeCursor();
+    window.addEventListener('load', removeCursor);
+    const cursorObserver = new MutationObserver(removeCursor);
+    cursorObserver.observe(document.documentElement, { childList: true, subtree: true });
+
     // 1. Header scroll
     const header = document.getElementById('gdas-header');
     if (header) {
@@ -113,6 +123,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const dots = sliderWrap.querySelectorAll('.gdas-dot');
         const prevBtn = sliderWrap.querySelector('.gdas-prev-slide');
         const nextBtn = sliderWrap.querySelector('.gdas-next-slide');
+
+        if (slides.length <= 1) {
+            if (slides[0]) slides[0].classList.add('active');
+            if (prevBtn) prevBtn.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'none';
+            dots.forEach(d => d.style.display = 'none');
+            return;
+        }
+
         let currentIndex = 0;
         let slideTimer = null;
         const autoPlayInterval = 6500; // 6.5s

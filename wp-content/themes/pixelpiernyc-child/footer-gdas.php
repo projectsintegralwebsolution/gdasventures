@@ -37,25 +37,13 @@
                 </ul>
             </div>
 
-            <!-- Col 3: Portfolio -->
-            <div class="gdas-footer-nav-col">
-                <h4 class="gdas-footer-heading">Portfolio</h4>
-                <ul class="gdas-footer-list">
-                    <li><a href="https://www.kinecogroup.com/" target="_blank" rel="noopener">Kineco ↗</a></li>
-                    <li><a href="https://core.co.in/" target="_blank" rel="noopener">CORE Energy ↗</a></li>
-                    <li><a href="https://airlifegases.com/india/" target="_blank" rel="noopener">AirLife Gases ↗</a></li>
-                    <li><a href="https://agnikul.in/" target="_blank" rel="noopener">Agnikul Cosmos ↗</a></li>
-                </ul>
-            </div>
-
-            <!-- Col 4: Connect & Platform -->
+            <!-- Col 3: Connect -->
             <div class="gdas-footer-nav-col">
                 <h4 class="gdas-footer-heading">Connect</h4>
                 <ul class="gdas-footer-list">
                     <li><a href="mailto:contact@gdasventures.com">contact@gdasventures.com</a></li>
                     <li><a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn Profile ↗</a></li>
-                    <li><span class="gdas-footer-badge">Private Investment Platform</span></li>
-                    <li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="gdas-footer-cta-link">Introduce Company →</a></li>
+                    <li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="gdas-footer-cta-link">Pitch to Us →</a></li>
                 </ul>
             </div>
         </div>
