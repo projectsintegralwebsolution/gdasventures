@@ -482,11 +482,24 @@ function gdas_sync_native_elementor_data() {
     $sync_kit_colors( 10 );
     $sync_kit_colors( 8 );
 
+    global $wpdb;
+    $find_page_id = function( $slugs, $title = '' ) use ( $wpdb ) {
+        if ( ! is_array( $slugs ) ) $slugs = [ $slugs ];
+        foreach ( $slugs as $s ) {
+            $p = get_page_by_path( $s );
+            if ( $p ) return (int) $p->ID;
+        }
+        if ( $title ) {
+            $id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'page' AND post_title LIKE %s AND post_status = 'publish' ORDER BY ID DESC LIMIT 1", '%' . $title . '%' ) );
+            if ( $id ) return (int) $id;
+        }
+        return 0;
+    };
+
     // 1. Home Page Refactor
     $home_id = get_option( 'page_on_front' );
     if ( ! $home_id ) {
-        $home_p = get_page_by_path( 'home' );
-        if ( $home_p ) $home_id = $home_p->ID;
+        $home_id = $find_page_id( [ 'home', 'front-page' ], 'Home' );
     }
     if ( $home_id ) {
         $home_raw = get_post_meta( $home_id, '_elementor_data', true );
@@ -551,7 +564,7 @@ function gdas_sync_native_elementor_data() {
                     }
 
                     // Investment Focus Subtitle
-                    if ( ( $el['id'] ?? '' ) === 'f4b4bd8' || ( ( $el['widgetType'] ?? '' ) === 'text-editor' && stripos( json_encode( $el ), 'deeptech' ) !== false && stripos( json_encode( $el ), 'defence' ) !== false ) ) {
+                    if ( ( $el['id'] ?? '' ) === 'f4b4bd8' || ( ( $el['widgetType'] ?? '' ) === 'text-editor' && ( stripos( json_encode( $el ), 'eight critical areas' ) !== false || stripos( json_encode( $el ), 'interconnected domains' ) !== false || stripos( json_encode( $el ), 'economic sovereignty' ) !== false || stripos( json_encode( $el ), 'sovereign future' ) !== false ) ) ) {
                         $el['settings']['editor'] = '<p>We invest across four interconnected domains that define India’s sovereign future.</p>';
                     }
                     if ( ( $el['id'] ?? '' ) === '267b8e8' || ( $el['id'] ?? '' ) === '2180f1a' ) {
@@ -655,9 +668,8 @@ function gdas_sync_native_elementor_data() {
     }
 
     // 2. Investments Page Refactor (Replace photos with logos & shorten descriptions)
-    $inv_page = get_page_by_path( 'investments' );
-    if ( $inv_page ) {
-        $inv_id = $inv_page->ID;
+    $inv_id = $find_page_id( [ 'investments', 'portfolio' ], 'Investments' );
+    if ( $inv_id ) {
         $inv_data = json_decode( get_post_meta( $inv_id, '_elementor_data', true ), true );
         if ( is_array( $inv_data ) ) {
             $inv_walker = function( &$elements ) use ( &$inv_walker, $logo_base ) {
@@ -709,9 +721,8 @@ function gdas_sync_native_elementor_data() {
     }
 
     // 3. Perspective Page Refactor (Remove side image, center editorial text layout)
-    $persp_page = get_page_by_path( 'our-perspective' );
-    if ( $persp_page ) {
-        $persp_id = $persp_page->ID;
+    $persp_id = $find_page_id( [ 'our-perspective', 'perspective' ], 'Perspective' );
+    if ( $persp_id ) {
         $persp_data = json_decode( get_post_meta( $persp_id, '_elementor_data', true ), true );
         if ( is_array( $persp_data ) ) {
             $persp_walker = function( &$elements ) use ( &$persp_walker ) {
@@ -744,9 +755,8 @@ function gdas_sync_native_elementor_data() {
     }
 
     // 4. About Us Page Refactor (Remove side image, update headline/copy, delete operating principles)
-    $about_page = get_page_by_path( 'about' );
-    if ( $about_page ) {
-        $about_id = $about_page->ID;
+    $about_id = $find_page_id( [ 'about', 'about-us' ], 'About' );
+    if ( $about_id ) {
         $about_data = json_decode( get_post_meta( $about_id, '_elementor_data', true ), true );
         if ( is_array( $about_data ) ) {
             // Delete Section 2 (gdas_about_pillars / Operating Principles)
@@ -778,11 +788,11 @@ function gdas_sync_native_elementor_data() {
                         $el['settings']['flex_justify_content'] = 'center';
                     }
                     // Headline update: "Built for builders."
-                    if ( ( $el['id'] ?? '' ) === '876cda5' ) {
+                    if ( ( $el['id'] ?? '' ) === '876cda5' || ( ( $el['widgetType'] ?? '' ) === 'heading' && ( stripos( json_encode( $el ), 'built for builders' ) !== false || stripos( json_encode( $el ), 'platform built' ) !== false ) ) ) {
                         $el['settings']['title'] = 'Built for builders.';
                     }
                     // Body text update (eradicate private investment platform)
-                    if ( ( $el['id'] ?? '' ) === 'd1d830a' ) {
+                    if ( ( $el['id'] ?? '' ) === 'd1d830a' || ( ( $el['widgetType'] ?? '' ) === 'text-editor' && ( stripos( json_encode( $el ), 'uncompromising belief' ) !== false || stripos( json_encode( $el ), 'patient capital' ) !== false || stripos( json_encode( $el ), 'physical capabilities' ) !== false ) ) ) {
                         $el['settings']['editor'] = "<p>G Das Ventures was formed with an uncompromising belief: the most important companies of India’s future will build real, complex, physical capabilities.</p><p>We do not operate with the short-term pressures of fund lifecycles. We partner with exceptional founders who have deep conviction in their domain, deploying patient, long-horizon capital to help build industrial leaders that endure.</p>";
                     }
 
@@ -798,9 +808,8 @@ function gdas_sync_native_elementor_data() {
     }
 
     // 5. Contact Page Refactor (Remove Platform Model, add LinkedIn Profile, strip non-select placeholders)
-    $contact_page = get_page_by_path( 'contact' );
-    if ( $contact_page ) {
-        $contact_id = $contact_page->ID;
+    $contact_id = $find_page_id( [ 'contact', 'contact-us', 'pitch' ], 'Contact' );
+    if ( $contact_id ) {
         $contact_data = json_decode( get_post_meta( $contact_id, '_elementor_data', true ), true );
         if ( is_array( $contact_data ) ) {
             $contact_walker = function( &$elements ) use ( &$contact_walker ) {
@@ -856,17 +865,34 @@ function gdas_sync_native_elementor_data() {
         }
     }
 
-    // Global Eradication of "Private Investment Platform" from DB postmeta & posts
-    global $wpdb;
+    // Global Eradication of "Private Investment Platform" and old texts from DB postmeta & posts
+    $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'A private investment platform built for builders.', 'Built for builders.')" );
+    $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'A Private Investment Platform Built For Builders.', 'Built for builders.')" );
+    $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'A private investment platform built for builders', 'Built for builders')" );
+    $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'A Private Investment Platform Built For Builders', 'Built for builders')" );
     $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'Private Investment Platform &middot; India', '')" );
     $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'Private Investment Platform · India', '')" );
     $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'Private Investment Platform', 'G Das Ventures')" );
+    $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'private investment platform', 'G Das Ventures')" );
+    $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'Private investment platform', 'G Das Ventures')" );
+    $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'We back companies across eight critical areas shaping India’s economic sovereignty.', 'We invest across four interconnected domains that define India’s sovereign future.')" );
+    $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'We back companies across eight critical areas shaping India\'s economic sovereignty.', 'We invest across four interconnected domains that define India’s sovereign future.')" );
+    $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'We back companies across eight critical areas shaping India&#8217;s economic sovereignty.', 'We invest across four interconnected domains that define India’s sovereign future.')" );
     $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'http://localhost/wordpress/', 'https://gdasventures.com/')" );
     $wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, 'https://grey-tapir-780392.hostingersite.com/', 'https://gdasventures.com/')" );
 
+    $wpdb->query( "UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, 'A private investment platform built for builders.', 'Built for builders.')" );
+    $wpdb->query( "UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, 'A Private Investment Platform Built For Builders.', 'Built for builders.')" );
+    $wpdb->query( "UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, 'A private investment platform built for builders', 'Built for builders')" );
+    $wpdb->query( "UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, 'A Private Investment Platform Built For Builders', 'Built for builders')" );
     $wpdb->query( "UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, 'Private Investment Platform &middot; India', '')" );
     $wpdb->query( "UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, 'Private Investment Platform · India', '')" );
     $wpdb->query( "UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, 'Private Investment Platform', 'G Das Ventures')" );
+    $wpdb->query( "UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, 'private investment platform', 'G Das Ventures')" );
+    $wpdb->query( "UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, 'Private investment platform', 'G Das Ventures')" );
+    $wpdb->query( "UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, 'We back companies across eight critical areas shaping India’s economic sovereignty.', 'We invest across four interconnected domains that define India’s sovereign future.')" );
+    $wpdb->query( "UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, 'We back companies across eight critical areas shaping India\'s economic sovereignty.', 'We invest across four interconnected domains that define India’s sovereign future.')" );
+    $wpdb->query( "UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, 'We back companies across eight critical areas shaping India&#8217;s economic sovereignty.', 'We invest across four interconnected domains that define India’s sovereign future.')" );
 
     // Clear Elementor CSS cache & regenerate Kit CSS
     if ( class_exists( '\Elementor\Plugin' ) ) {
@@ -878,4 +904,21 @@ function gdas_sync_native_elementor_data() {
     }
 
     update_option( 'gdas_native_elementor_v5_synced', time() );
+
+    if ( isset( $_GET['sync_trigger'] ) ) {
+        header( 'Content-Type: application/json' );
+        echo json_encode([
+            'status' => 'success',
+            'pages_synced' => [
+                'home'        => $home_id,
+                'investments' => $inv_id,
+                'perspective' => $persp_id,
+                'about'       => $about_id,
+                'contact'     => $contact_id,
+            ],
+            'timestamp' => current_time( 'mysql' ),
+        ]);
+        exit;
+    }
 }
+
